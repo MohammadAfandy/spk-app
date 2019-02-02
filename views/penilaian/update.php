@@ -5,9 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Penilaian */
 
-$this->title = 'Update Penilaian: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Penilaians', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->title = 'Update Penilaian - ' . \app\models\Alternatif::namaAlternatif($model->id_alternatif);
+$this->params['breadcrumbs'][] = ['label' => 'Penilaian', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="penilaian-update">
@@ -16,6 +15,10 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'alternatif' => $alternatif,
+        'kriteria' => $kriteria,
+        'nilai' => $nilai,
+        'id' => $id,
     ]) ?>
 
 </div>

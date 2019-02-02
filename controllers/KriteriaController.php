@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use app\models\Spk;
+use app\models\Penilaian;
 /**
  * KriteriaController implements the CRUD actions for Kriteria model.
  */
@@ -32,10 +33,15 @@ class KriteriaController extends Controller
 
     /**
      * Lists all Kriteria models.
+     * @param integer $id (id_spk)
      * @return mixed
      */
     public function actionIndex($id = null)
     {
+        if ($id != null && !Spk::find()->where(['id' => $id])->exists()) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $model = new Kriteria();
 
         $searchModel = new KriteriaSearch();
@@ -54,18 +60,24 @@ class KriteriaController extends Controller
 
     /**
      * Creates a new Kriteria model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'index' page.
+     * @param int $id (id_spk)
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id = null)
     {
+        if ($id != null && !Spk::find()->where(['id' => $id])->exists()) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $model = new Kriteria();
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
+            $model->id_spk = $id;
             
             if ($model->save()) {
-                $this->actionResetBobot($model->id_spk);
+                $this->resetBobot($model->id_spk);
                 return $this->redirect(['index', 'id' => $model->id_spk]);
             }
 
@@ -75,16 +87,53 @@ class KriteriaController extends Controller
     /**
      * Deletes an existing Kriteria model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param integer $id (id_kriteria)
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        if ($this->findModel($id)->delete()) {
-            $this->actionResetBobot($model->id_spk);
+        $model = $this->findModel($id);
+        $id_spk = $model->id_spk;
+        $id_kriteria = $model->id;
+
+        if ($model->delete()) {
+            $this->resetBobot($id_spk);
+            $this->deletePenilaian($model->id);
         }
-        return $this->redirect(['index']);
+
+        return $this->redirect(['index', 'id' => $id_spk]);
+    }
+
+     /**
+     * Tambah Crips Untuk Setiap Kriteria.
+     * @param integer $id (id_kriteria)
+     * @return mixed
+     */
+    public function actionCrips($id)
+    {
+        $model = $this->findModel($id);
+
+        $post_data = Yii::$app->request->post('Kriteria');
+
+        if ($post_data) {
+            $crips = [];
+            foreach ($post_data['crips'] as $key => $post_crips) {
+                $crips[$post_crips['nama_crips']] = $post_crips['nilai_crips'];
+            }
+
+            if (!empty($crips)) {
+                $model->crips = json_encode(array_map('strval', $crips));
+                $model->save();
+            }
+
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('crips', [
+            'model' => $model,
+            'id' => $id,
+        ]);
     }
 
     /**
@@ -119,15 +168,20 @@ class KriteriaController extends Controller
             
                 $model->save();
             }
-
         }
 
-        return $this->redirect(['index', 'id' => $model->id_spk]);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionResetBobot($id)
     {
-        $model = Kriteria::find()->where(['id_spk' => $id])->all();
+        $this->resetBobot($id);
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function resetBobot($id_spk)
+    {
+        $model = Kriteria::find()->where(['id_spk' => $id_spk])->all();
 
         if ($model) {
             foreach ($model as $key => $kriteria) {
@@ -135,7 +189,25 @@ class KriteriaController extends Controller
                 $kriteria->save();
             }
         }
+    }
 
-        return $this->redirect(['index', 'id' => $kriteria->id_spk]);
+    public function deletePenilaian($id_kriteria)
+    {
+        $penilaian = Penilaian::find()->all();
+
+        foreach ($penilaian as $key => $pen) {
+
+            if (!empty($pen->penilaian)) {
+                $nilai = json_decode($pen->penilaian, true);
+
+                if (array_key_exists($id_kriteria, $nilai)) {
+                    unset($nilai[$id_kriteria]);
+                    $model = Penilaian::findOne($pen->id);
+                    $model->penilaian = json_encode($nilai);
+                    $model->save();
+                }
+            }
+    
+        }
     }
 }

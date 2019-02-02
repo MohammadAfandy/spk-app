@@ -36,7 +36,7 @@ class Kriteria extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama_kriteria', 'id_spk'], 'required'],
+            [['nama_kriteria', 'id_spk', 'type'], 'required'],
             [['type', 'id_spk'], 'integer'],
             [['bobot'], 'number'],
             [['created_date', 'updated_date'], 'safe'],
@@ -72,5 +72,12 @@ class Kriteria extends \yii\db\ActiveRecord
                 'value' => new Expression('NOW()'),
             ],
         ];
+    }
+
+    public static function getCrips($id_kriteria)
+    {
+        $crips = json_decode(self::findOne($id_kriteria)->crips, true);
+
+        return $crips ? array_flip($crips) : '';
     }
 }

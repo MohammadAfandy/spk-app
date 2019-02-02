@@ -14,13 +14,11 @@ use yii\bootstrap\Modal;
 
         <?php
         $form = ActiveForm::begin([
-            'action' => ['create']
+            'action' => ['create', 'id' => $id]
         ]);
         ?>
     
         <?= $form->field($model, 'nama_kriteria')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'id_spk')->dropDownList(\yii\helpers\ArrayHelper::map($data_spk, 'id', 'nama_spk'), ['prompt' => '--PILIH-',]) ?>
 
         <?= $form->field($model, 'type')->dropDownList(
             [
@@ -43,7 +41,7 @@ use yii\bootstrap\Modal;
 
             $warning = '<div style="margin-bottom: 20px;">
                             <span style="color: red">
-                                <strong>*Menambah Kriteria Akan Menghapus Data Penilaian dan Mereset Bobot Kriteria</strong>
+                                <strong>*Menambah Kriteria Akan Mereset Bobot Kriteria</strong>
                             </span>
                         </div>';
 

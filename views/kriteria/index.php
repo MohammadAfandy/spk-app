@@ -18,169 +18,189 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::dropDownList('spk', $id, \yii\helpers\ArrayHelper::map($data_spk, 'id', 'nama_spk'), ['prompt' => '--PILIH--', 'class' => 'form-control', 'id' => 'pilih_spk']) ?>
-    </p>
-
-    <p>
-        <?php
-        Modal::begin([
-            'header' => '<h2>Tambah Kriteria</h2>',
-            'id' => 'modal_tambah',
-            'size' => 'modal-lg',
-            'toggleButton' => [
-                'label' => 'Tambah Kriteria',
-                'class' => 'btn btn-success',
-                'disabled' => Helper::checkRoute('admin-role') ? false : true,
-            ],
-        ]);
-
-        echo $this->render('_form', [
-            'model' => $model,
-            'data_spk' => $data_spk,
-        ]);
-
-        Modal::end();
-        ?>
-    </p>
-
-    <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
-        <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
-        <div style="color: red; min-height: 20px;">
-            <strong><span id="error_bobot"></span></strong>
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-lg-2">
+            <label>PILIH NAMA SPK</label>
         </div>
-        <?php
-        $tabindex = 1;
-        echo GridView::widget([
-            'dataProvider' => $dataProvider,
-            // 'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-    
-                [
-                    'header' => 'Nama Kriteria' . '<span class="pull-right">' . 
-                        Html::button('Edit All', [
-                            'class' => 'btn btn-success btn-xs',
-                            'id' => 'btn_edit_all_nama',
-                        ]) . ' ' .
-                        Html::button('Cancel All', [
-                            'class' => 'btn btn-danger btn-xs',
-                            'id' => 'btn_cancel_all_nama',
-                        ])
-                    ,
-                    'attribute' => 'nama_kriteria',
-                    'value' => function($model) use (&$tabindex) {
-                        $id_spk = $model->id;
-                        $nama = Html::textInput('Kriteria[' .$model->id. '][nama_kriteria]', ucwords($model->nama_kriteria), [
-                            'class' => 'nama_kriteria',
-                            'disabled' => 'disabled',
-                            'tabindex' => $tabindex,
-                            'data-id' => $model->id,
-                            'data-oldval' => $model->nama_kriteria,
-                        ]);
-                        $edit = Html::button('Edit', [
-                            'class' => 'btn btn-success btn-xs btn_edit_nama',
-                            'data-id' => $model->id,
-                        ]);
-                        $cancel = Html::button('X', [
-                            'class' => 'btn btn-danger btn-xs btn_cancel_nama',
-                            'data-id' => $model->id,
-                        ]);
-                        $tabindex++;
-                        return $nama . '<span class="pull-right">' . $edit . ' '. $cancel;
-                    },
-                    'format' => 'raw',
+        <div class="col-lg-4">
+            <?= Html::dropDownList('spk', $id, \yii\helpers\ArrayHelper::map($data_spk, 'id', 'nama_spk'), ['prompt' => '--PILIH--', 'class' => 'form-control', 'id' => 'pilih_spk']) ?>
+        </div>
+    </div>
+
+    <?php if ($id): ?>
+        <p>
+            <?php
+            Modal::begin([
+                'header' => '<h2>Tambah Kriteria - ' . \app\models\Spk::namaSpk($id) . '</h2>',
+                'id' => 'modal_tambah',
+                'size' => 'modal-lg',
+                'toggleButton' => [
+                    'label' => 'Tambah Kriteria',
+                    'class' => 'btn btn-success',
+                    'disabled' => Helper::checkRoute('admin-role') ? false : true,
                 ],
-                [
-                    'header' => 'Type Kriteria' . '<span class="pull-right">' . 
-                        Html::button('Edit All', [
-                            'class' => 'btn btn-success btn-xs',
-                            'id' => 'btn_edit_all_type',
-                        ]) . ' ' .
-                        Html::button('Cancel All', [
-                            'class' => 'btn btn-danger btn-xs',
-                            'id' => 'btn_cancel_all_type',
-                        ])
-                    ,
-                    'attribute' => 'type',
-                    'value' => function($model) use (&$tabindex) {
-                        $type = Html::dropDownList('Kriteria[' .$model->id. '][type]',
-                            $model->type,
-                            [
-                                Kriteria::COST => 'COST',
-                                Kriteria::BENEFIT => 'BENEFIT',
-                            ],
-                            [
-                                'class' => 'type_kriteria',
+            ]);
+    
+            echo $this->render('_form', [
+                'model' => $model,
+                'data_spk' => $data_spk,
+                'id' => $id,
+            ]);
+    
+            Modal::end();
+            ?>
+        </p>
+
+        <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
+            <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
+            <div style="color: red; min-height: 20px;">
+                <strong><span id="error_bobot"></span></strong>
+            </div>
+            <?php
+            $tabindex = 1;
+            echo GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+        
+                    [
+                        'header' => 'Nama Kriteria' . '<span class="pull-right">' . 
+                            Html::button('Edit All', [
+                                'class' => 'btn btn-success btn-xs',
+                                'id' => 'btn_edit_all_nama',
+                            ]) . ' ' .
+                            Html::button('Cancel All', [
+                                'class' => 'btn btn-danger btn-xs',
+                                'id' => 'btn_cancel_all_nama',
+                            ])
+                        ,
+                        'attribute' => 'nama_kriteria',
+                        'value' => function($model) use (&$tabindex) {
+                            $id_spk = $model->id;
+                            $nama = Html::textInput('Kriteria[' .$model->id. '][nama_kriteria]', ucwords($model->nama_kriteria), [
+                                'class' => 'nama_kriteria',
                                 'disabled' => 'disabled',
                                 'tabindex' => $tabindex,
                                 'data-id' => $model->id,
-                                'data-oldval' => $model->type,
-                            ]
-                        );
-                        $edit = Html::button('Edit', [
-                            'class' => 'btn btn-success btn-xs btn_edit_type',
-                            'data-id' => $model->id,
-                        ]);
-                        $cancel = Html::button('X', [
-                            'class' => 'btn btn-danger btn-xs btn_cancel_type',
-                            'data-id' => $model->id,
-                        ]);
-                        $tabindex++;
-                        return $type . '<span class="pull-right">' . $edit . ' '. $cancel;
-                    },
-                    'format' => 'raw',
-                    // 'value' => function($model) {
-                    //     return $model->type = Kriteria::COST ? 'COST' : 'BENEFIT';
-                    // },
+                                'data-oldval' => $model->nama_kriteria,
+                            ]);
+                            $edit = Html::button('Edit', [
+                                'class' => 'btn btn-success btn-xs btn_edit_nama',
+                                'data-id' => $model->id,
+                            ]);
+                            $cancel = Html::button('X', [
+                                'class' => 'btn btn-danger btn-xs btn_cancel_nama',
+                                'data-id' => $model->id,
+                            ]);
+                            $tabindex++;
+                            return $nama . '<span class="pull-right">' . $edit . ' '. $cancel;
+                        },
+                        'format' => 'raw',
+                    ],
+                    [
+                        'header' => 'Type Kriteria' . '<span class="pull-right">' . 
+                            Html::button('Edit All', [
+                                'class' => 'btn btn-success btn-xs',
+                                'id' => 'btn_edit_all_type',
+                            ]) . ' ' .
+                            Html::button('Cancel All', [
+                                'class' => 'btn btn-danger btn-xs',
+                                'id' => 'btn_cancel_all_type',
+                            ])
+                        ,
+                        'attribute' => 'type',
+                        'value' => function($model) use (&$tabindex) {
+                            $type = Html::dropDownList('Kriteria[' .$model->id. '][type]',
+                                $model->type,
+                                [
+                                    Kriteria::COST => 'COST',
+                                    Kriteria::BENEFIT => 'BENEFIT',
+                                ],
+                                [
+                                    'class' => 'type_kriteria',
+                                    'disabled' => 'disabled',
+                                    'tabindex' => $tabindex,
+                                    'data-id' => $model->id,
+                                    'data-oldval' => $model->type,
+                                ]
+                            );
+                            $edit = Html::button('Edit', [
+                                'class' => 'btn btn-success btn-xs btn_edit_type',
+                                'data-id' => $model->id,
+                            ]);
+                            $cancel = Html::button('X', [
+                                'class' => 'btn btn-danger btn-xs btn_cancel_type',
+                                'data-id' => $model->id,
+                            ]);
+                            $tabindex++;
+                            return $type . '<span class="pull-right">' . $edit . ' '. $cancel;
+                        },
+                        'format' => 'raw',
+                        // 'value' => function($model) {
+                        //     return $model->type = Kriteria::COST ? 'COST' : 'BENEFIT';
+                        // },
+                    ],
+                    [
+                        'header' => 'Bobot' . '<span class="pull-right">' . 
+                            Html::button('Edit All', [
+                                'class' => 'btn btn-success btn-xs',
+                                'id' => 'btn_edit_all_bobot',
+                            ]) . ' ' .
+                            Html::button('Cancel All', [
+                                'class' => 'btn btn-danger btn-xs',
+                                'id' => 'btn_cancel_all_bobot',
+                            ])
+                        ,
+                        'attribute' => 'bobot',
+                        'value' => function($model) use (&$tabindex) {
+                            $bobot = Html::textInput('Kriteria[' .$model->id. '][bobot]', $model->bobot * 100, [
+                                'type' => 'number',
+                                'class' => 'bobot_kriteria',
+                                'disabled' => 'disabled',
+                                'tabindex' => $tabindex,
+                                'data-id' => $model->id,
+                                'data-oldval' => $model->bobot * 100,
+                            ]);
+                            $edit = Html::button('Edit', [
+                                'class' => 'btn btn-success btn-xs btn_edit_bobot',
+                                'data-id' => $model->id,
+                            ]);
+                            $cancel = Html::button('X', [
+                                'class' => 'btn btn-danger btn-xs btn_cancel_bobot',
+                                'data-id' => $model->id,
+                            ]);
+                            $tabindex++;
+                            return $bobot . ' %<span class="pull-right">' . $edit . ' '. $cancel;
+                        },
+                        'format' => 'raw',
+                    ],
+        
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'header' => 'Aksi',
+                        'template' => Helper::filterActionColumn('{crips} {delete}'),
+                        'buttons' => [
+                            'crips' => function ($url, $model, $key) {
+                                return Html::a('Tambah Crips', $url, ['class' => 'btn btn-xs btn-primary']);
+                            },
+                            'delete' => function ($url, $model, $key) {
+                                return Html::a('Delete', $url, [
+                                    'class' => 'btn btn-xs btn-danger',
+                                    'data-method' => 'post',
+                                    'data-confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ?',
+                                ]);
+                            },
+                        ],
+                    ],
                 ],
-                [
-                    'header' => 'Bobot' . '<span class="pull-right">' . 
-                        Html::button('Edit All', [
-                            'class' => 'btn btn-success btn-xs',
-                            'id' => 'btn_edit_all_bobot',
-                        ]) . ' ' .
-                        Html::button('Cancel All', [
-                            'class' => 'btn btn-danger btn-xs',
-                            'id' => 'btn_cancel_all_bobot',
-                        ])
-                    ,
-                    'attribute' => 'bobot',
-                    'value' => function($model) use (&$tabindex) {
-                        $bobot = Html::textInput('Kriteria[' .$model->id. '][bobot]', $model->bobot * 100, [
-                            'type' => 'number',
-                            'class' => 'bobot_kriteria',
-                            'disabled' => 'disabled',
-                            'tabindex' => $tabindex,
-                            'data-id' => $model->id,
-                            'data-oldval' => $model->bobot * 100,
-                        ]);
-                        $edit = Html::button('Edit', [
-                            'class' => 'btn btn-success btn-xs btn_edit_bobot',
-                            'data-id' => $model->id,
-                        ]);
-                        $cancel = Html::button('X', [
-                            'class' => 'btn btn-danger btn-xs btn_cancel_bobot',
-                            'data-id' => $model->id,
-                        ]);
-                        $tabindex++;
-                        return $bobot . ' %<span class="pull-right">' . $edit . ' '. $cancel;
-                    },
-                    'format' => 'raw',
-                ],
+            ]);
+            ?>
     
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header' => 'Aksi',
-                    'template' => Helper::filterActionColumn('{delete}'),
-                ],
-            ],
-        ]);
-        ?>
-
-        <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
-        <?= Html::a('Reset Bobot', ['reset-bobot', 'id' => $id], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
-    </form>
+            <?= Html::submitButton('Set Kriteria', ['class' => 'btn btn-primary', 'id' => 'btn_set']); ?>
+            <?= Html::a('Reset Bobot', ['reset-bobot', 'id' => $id], ['class' => 'btn btn-danger', 'id' => 'btn_reset']); ?>
+        </form>
+    <?php endif; ?>
 </div>
 
 <?php
@@ -320,3 +340,4 @@ $this->registerJs(
     View::POS_READY,
     'kriteria-js'
 );
+?>

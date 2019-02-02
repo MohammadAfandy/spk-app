@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Alternatif */
 
-$this->title = 'Create Alternatif';
-$this->params['breadcrumbs'][] = ['label' => 'Alternatifs', 'url' => ['index']];
+$this->title = 'Tambah Alternatif - ' . \app\models\Spk::namaSpk($id);
+$this->params['breadcrumbs'][] = ['label' => 'Alternatif', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="alternatif-create">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'list_spk' => $list_spk,
+        'id' => $id,
     ]) ?>
 
 </div>

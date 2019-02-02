@@ -33,17 +33,22 @@ class PenilaianController extends Controller
 
     /**
      * Lists all Penilaian models.
+     * @param integer $id (id_spk)
      * @return mixed
      */
     public function actionIndex($id = null)
     {
-        $penilaian = Penilaian::find()->joinWith(['alternatif'])->all();
+        if ($id != null && !Spk::find()->where(['id' => $id])->exists()) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $penilaian = Penilaian::find()->alias('p')->where(['p.id_spk' => $id])->joinWith(['alternatif'])->all();
         $kriteria = Kriteria::find()->where(['id_spk' => $id])->all();
 
         $nilai = [];
 
         foreach ($penilaian as $key => $pen) {
-            $nilai[$pen->id_penilaian] = json_decode($pen->penilaian, true);
+            $nilai[$pen->id] = json_decode($pen->penilaian, true);
         }
 
         $data_spk = Spk::find()->indexBy('id')->all();
@@ -73,53 +78,90 @@ class PenilaianController extends Controller
     /**
      * Creates a new Penilaian model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * @param int $id (id_spk)
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id = null)
     {
-        $model = new Penilaian();
+        if ($id != null && !Spk::find()->where(['id' => $id])->exists()) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = new Penilaian();
+        $alternatif = $model->cekAlternatif($id);
+        $kriteria = Kriteria::find()->where(['id_spk' => $id])->all();
+
+        $post_data = Yii::$app->request->post();
+
+        if (!empty($post_data)) {
+            $model->load($post_data);
+            $model->id_spk = $id;
+            $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);
+            
+            if ($model->save()) {
+                return $this->redirect(['index', 'id' => $id]);
+            }
+
         }
 
         return $this->render('create', [
             'model' => $model,
+            'alternatif' => $alternatif,
+            'kriteria' => $kriteria,
+            'id' => $id,
         ]);
     }
 
     /**
      * Updates an existing Penilaian model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param integer $id (id_penilaian)
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $alternatif = $model->cekAlternatif($id);
+        $kriteria = Kriteria::find()->where(['id_spk' => $model->id_spk])->all();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $nilai = json_decode($model->penilaian, true);
+
+        $post_data = Yii::$app->request->post();
+
+        if (!empty($post_data)) {
+            $model->load($post_data);
+            $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);
+            
+            if ($model->save()) {
+                return $this->redirect(['index', 'id' => $model->id_spk]);
+            }
+
         }
 
         return $this->render('update', [
             'model' => $model,
+            'alternatif' => $alternatif,
+            'kriteria' => $kriteria,
+            'nilai' => $nilai,
+            'id' => $id,
         ]);
     }
 
     /**
      * Deletes an existing Penilaian model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param integer $id (id_penilaian)
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $id_spk = $model->id_spk;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $id_spk]);
     }
 
     /**

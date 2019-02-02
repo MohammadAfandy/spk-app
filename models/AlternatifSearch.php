@@ -38,9 +38,9 @@ class AlternatifSearch extends Alternatif
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($id_spk, $params)
     {
-        $query = Alternatif::find();
+        $query = Alternatif::find()->where(['id_spk' => $id_spk]);
 
         // add conditions that should always apply here
 

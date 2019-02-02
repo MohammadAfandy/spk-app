@@ -44,6 +44,7 @@ AppAsset::register($this);
         ['label' => 'Alternatif', 'url' => ['/alternatif/index']],
         ['label' => 'Kriteria', 'url' => ['/kriteria/index']],
         ['label' => 'Penilaian', 'url' => ['/penilaian/index']],
+        ['label' => 'Laporan', 'url' => ['/laporan/index']],
         ['label' => 'User Management', 'url' => ['/admin/assignment/index']],
     ];
 
@@ -58,7 +59,6 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right nav-tab'],
         'items' => [
             ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
 
             Yii::$app->user->isGuest
             ? (['label' => 'Login', 'url' => ['/site/login']])

@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AlternatifSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -14,24 +13,47 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Tambah Alternatif', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-lg-2">
+            <label>PILIH NAMA SPK</label>
+        </div>
+        <div class="col-lg-4">
+            <?= Html::dropDownList('spk', $id, \yii\helpers\ArrayHelper::map($data_spk, 'id', 'nama_spk'), ['prompt' => '--PILIH--', 'class' => 'form-control', 'id' => 'pilih_spk']) ?>
+        </div>
+    </div>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'nama_alternatif',
-            'keterangan:ntext',
-            'id_spk',
-            'created_date',
-            //'updated_date',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+    <?php if ($id): ?>
+        <p>
+            <?= Html::a('Tambah Alternatif', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
+        </p>
+    
+        <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+    
+                    'nama_alternatif',
+                    'keterangan:ntext',
+                    'created_date',
+                    //'updated_date',
+    
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    <?php endif; ?>
 </div>
+
+<?php
+$this->registerJs(
+    '
+
+    $("#pilih_spk").on("change", function() {
+        window.location.href = "' . \yii\helpers\Url::to(['index']) . '/" + this.value;
+    });
+
+    ',
+    \yii\web\View::POS_READY,
+    'alternatif-js'
+);
+?>

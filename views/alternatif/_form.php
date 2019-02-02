@@ -19,8 +19,21 @@ use yii\bootstrap\ActiveForm;
                 'layout' => 'horizontal',
             ]);
         ?>
-        
-        <?= $form->field($model, 'id_spk')->dropDownList($list_spk, ['prompt' => '--PILIH-',]) ?>
+        <div class="form-group">
+            <?php if ($model->isNewRecord): ?>
+
+                <div class="col-sm-offset-3 col-sm-6">
+                    <?= Html::textInput('nama_spk', \app\models\Spk::namaSpk($id), ['disabled' => true, 'class' => 'form-control']) ?>
+                </div>
+            
+            <?php else: ?>
+
+                <div class="col-sm-offset-3 col-sm-6">
+                    <?= Html::textInput('nama_spk', \app\models\Spk::namaSpk($model->id_spk), ['disabled' => true, 'class' => 'form-control']) ?>
+                </div>
+
+            <?php endif; ?>
+        </div>
 
         <?= $form->field($model, 'nama_alternatif')->textInput(['maxlength' => true]) ?>
 

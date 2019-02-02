@@ -67,4 +67,11 @@ class Spk extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+    public static function namaSpk($id_spk)
+    {
+        $nama_spk = self::find()->where(['id' => $id_spk])->one()->nama_spk;
+
+        return $nama_spk ? $nama_spk : '';
+    }
 }

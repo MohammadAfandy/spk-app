@@ -33,16 +33,21 @@ class AlternatifController extends Controller
 
     /**
      * Lists all Alternatif models.
+     * @param integer $id (id_spk)
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id = null)
     {
         $searchModel = new AlternatifSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search($id, Yii::$app->request->queryParams);
+
+        $data_spk = Spk::find()->indexBy('id')->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'data_spk' => $data_spk,
+            'id' => $id,
         ]);
     }
 
@@ -62,28 +67,39 @@ class AlternatifController extends Controller
     /**
      * Creates a new Alternatif model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     * @param int $id (id_spk)
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+        if (!Spk::find()->where(['id' => $id])->exists()) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $model = new Alternatif();
 
-        $list_spk = ArrayHelper::map(Spk::find()->all(), 'id', 'nama_spk');
+        $post_data = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if (!empty($post_data)) {
+            $model->load($post_data);
+            $model->id_spk = $id;
+            
+            if ($model->save()) {
+                return $this->redirect(['index', 'id' => $id]);
+            }
+
         }
 
         return $this->render('create', [
             'model' => $model,
-            'list_spk' => $list_spk,
+            'id' => $id,
         ]);
     }
 
     /**
      * Updates an existing Alternatif model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * If update is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id (id_alternatif)
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -91,15 +107,12 @@ class AlternatifController extends Controller
     {
         $model = $this->findModel($id);
 
-        $list_spk = ArrayHelper::map(Spk::find()->all(), 'id', 'nama_spk');
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'id' => $model->id_spk]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'list_spk' => $list_spk,
         ]);
     }
 
@@ -114,7 +127,7 @@ class AlternatifController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**

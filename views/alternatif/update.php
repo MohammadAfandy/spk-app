@@ -5,9 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Alternatif */
 
-$this->title = 'Update Alternatif: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Alternatifs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->title = 'Update Alternatif - ' . $model->nama_alternatif;
+$this->params['breadcrumbs'][] = ['label' => 'Alternatif', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="alternatif-update">
@@ -16,7 +15,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
-        'list_spk' => $list_spk,
     ]) ?>
 
 </div>

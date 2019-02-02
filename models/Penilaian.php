@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\models\Alternatif;
 /**
  * This is the model class for table "{{%penilaian}}".
  *
@@ -44,8 +44,8 @@ class Penilaian extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_spk' => 'Id Spk',
-            'id_alternatif' => 'Id Alternatif',
+            'id_spk' => 'Nama Spk',
+            'id_alternatif' => 'Nama Alternatif',
             'penilaian' => 'Penilaian',
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
@@ -54,6 +54,28 @@ class Penilaian extends \yii\db\ActiveRecord
 
     public function getAlternatif()
     {
-        return $this->hasOne(\app\models\Alternatif::className(), ['id' => 'id_alternatif']);
+        return $this->hasOne(Alternatif::className(), ['id' => 'id_alternatif']);
+    }
+
+    public static function namaAlternatif($id_penilaian)
+    {
+        $id_alternatif = self::findOne($id_penilaian)->id_alternatif;
+        $nama_alternatif = Alternatif::findOne($id_alternatif)->nama_alternatif;
+
+        return $nama_alternatif ? $nama_alternatif : '';
+    }
+
+    public static function cekAlternatif($id)
+    {
+        $alternatif_exist = self::find()->select(['id_alternatif'])->where(['id_spk' => $id])->column();
+
+        $alternatif = Alternatif::find()->andWhere(['id_spk' => $id])->andWhere(['NOT IN', 'id', $alternatif_exist])->all();
+
+        if ($alternatif) {
+            $data_alternatif = \yii\helpers\ArrayHelper::map($alternatif, 'id', 'nama_alternatif');
+            return $data_alternatif;
+        }
+
+        return null;
     }
 }
