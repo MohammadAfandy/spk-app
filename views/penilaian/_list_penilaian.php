@@ -20,7 +20,12 @@ use yii\helpers\Html;
                 <td><?= $no ?></td>
                 <td><?= $pen->alternatif->nama_alternatif; ?></td>
                 <?php foreach ($kriteria as $kri): ?>
-                    <td><?= isset($nilai[$pen->id][$kri->id]) ? $nilai[$pen->id][$kri->id] : '-' ?></td>
+                    <td>
+                        <?php
+                        echo (isset($nilai[$pen->id][$kri->id])) 
+                        ? app\models\Kriteria::nilaiToCrips($nilai[$pen->id][$kri->id], $kri->id) : '-';
+                        ?>
+                    </td>
                 <?php endforeach; ?>
                 <td>
                     <?= Html::a('Update',

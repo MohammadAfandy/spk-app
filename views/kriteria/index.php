@@ -50,6 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
             Modal::end();
             ?>
         </p>
+        <?php
+            Modal::begin(['id' =>'modal_crips', 'size' => 'modal-lg',]);
+            Modal::end();
+        ?>
 
         <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
             <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
@@ -137,9 +141,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $type . '<span class="pull-right">' . $edit . ' '. $cancel;
                         },
                         'format' => 'raw',
-                        // 'value' => function($model) {
-                        //     return $model->type = Kriteria::COST ? 'COST' : 'BENEFIT';
-                        // },
                     ],
                     [
                         'header' => 'Bobot' . '<span class="pull-right">' . 
@@ -182,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => Helper::filterActionColumn('{crips} {delete}'),
                         'buttons' => [
                             'crips' => function ($url, $model, $key) {
-                                return Html::a('Tambah Crips', $url, ['class' => 'btn btn-xs btn-primary']);
+                                return Html::a('Crips', $url, ['class' => 'btn btn-xs btn-primary show-modal-crips']);
                             },
                             'delete' => function ($url, $model, $key) {
                                 return Html::a('Delete', $url, [
@@ -307,6 +308,15 @@ $this->registerJs(
             total += parseInt(this.value);
         });
         $(this).attr("data-max", (100 - total) + parseInt(this.value));
+    });
+
+    $(document).on("click", ".show-modal-crips", function(e) {
+        e.preventDefault();
+        $("#modal_crips").modal("show").find(".modal-content").load($(this).attr("href"));
+    });
+
+    $("#modal_crips").on("hidden.bs.modal", function () {
+        $(this).find(".modal-content").empty();
     });
 
     $("#btn_set").on("click", function() {

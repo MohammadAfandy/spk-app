@@ -80,4 +80,26 @@ class Kriteria extends \yii\db\ActiveRecord
 
         return $crips ? array_flip($crips) : '';
     }
+
+    /**
+     * Convert nilai to nama crips
+     * @param double nilai_crips
+     * @param int id_kriteria
+     * @return string nama_crips
+     */
+    public static function nilaiToCrips($nilai_crips, $id_kriteria)
+    {
+        $crips = json_decode(self::findOne($id_kriteria)->crips, true);
+        
+        if ($crips) {
+            $nama_crips = array_search($nilai_crips, $crips);
+            if ($nama_crips) {
+                return $nama_crips;   
+            } else {
+                return $nilai_crips;
+            }   
+        } else {
+            return $nilai_crips;
+        }
+    }
 }

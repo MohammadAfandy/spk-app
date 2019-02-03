@@ -112,25 +112,31 @@ class KriteriaController extends Controller
      */
     public function actionCrips($id)
     {
+        $this->layout = false;
         $model = $this->findModel($id);
-
-        $post_data = Yii::$app->request->post('Kriteria');
+        $post_data = Yii::$app->request->post();
 
         if ($post_data) {
-            $crips = [];
-            foreach ($post_data['crips'] as $key => $post_crips) {
-                $crips[$post_crips['nama_crips']] = $post_crips['nilai_crips'];
-            }
 
-            if (!empty($crips)) {
-                $model->crips = json_encode(array_map('strval', $crips));
+            if (!empty($post_data['Crips'])) {
+                $crips = [];
+                foreach ($post_data['Crips'] as $key => $post_crips) {
+                    $crips[$post_crips['nama_crips']] = $post_crips['nilai_crips'];
+                }
+
+                if (!empty($crips)) {
+                    $model->crips = json_encode(array_map('strval', $crips));
+                    $model->save();
+                }
+            } else {
+                $model->crips = '';
                 $model->save();
             }
 
-            return $this->redirect(['index']);
+            return $this->redirect(Yii::$app->request->referrer);
         }
 
-        return $this->render('crips', [
+        return $this->renderAjax('crips', [
             'model' => $model,
             'id' => $id,
         ]);
