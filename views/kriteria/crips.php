@@ -77,7 +77,6 @@ use yii\bootstrap\ActiveForm;
 $this->registerJs(
     '
     
-
     $(function() {
         let id_crips = ' . $id_crips .  ';
 

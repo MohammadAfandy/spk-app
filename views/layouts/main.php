@@ -44,7 +44,7 @@ AppAsset::register($this);
         ['label' => 'Alternatif', 'url' => ['/alternatif/index']],
         ['label' => 'Kriteria', 'url' => ['/kriteria/index']],
         ['label' => 'Penilaian', 'url' => ['/penilaian/index']],
-        ['label' => 'Laporan', 'url' => ['/laporan/index']],
+        ['label' => 'Hasil', 'url' => ['/hasil/index']],
         ['label' => 'User Management', 'url' => ['/admin/assignment/index']],
     ];
 

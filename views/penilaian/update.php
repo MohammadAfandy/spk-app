@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Penilaian */
 
-$this->title = 'Update Penilaian - ' . \app\models\Alternatif::namaAlternatif($model->id_alternatif);
+$this->title = 'Update Penilaian - ' . \app\models\Penilaian::namaAlternatif($model->id);
 $this->params['breadcrumbs'][] = ['label' => 'Penilaian', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

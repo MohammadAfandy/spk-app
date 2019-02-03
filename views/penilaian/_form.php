@@ -45,7 +45,7 @@ use yii\bootstrap\ActiveForm;
 
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
-                    <?= Html::textInput('nama_alternatif', \app\models\Alternatif::namaAlternatif($model->id_alternatif), ['disabled' => true, 'class' => 'form-control']) ?>
+                    <?= Html::textInput('nama_alternatif', \app\models\Penilaian::namaAlternatif($model->id), ['disabled' => true, 'class' => 'form-control']) ?>
                 </div>
             </div>
         <?php endif; ?>

@@ -69,11 +69,4 @@ class Alternatif extends \yii\db\ActiveRecord
             ],
         ];
     }
-
-    public static function namaAlternatif($id_alternatif)
-    {
-        $nama_alternatif = self::find()->where(['id' => $id_alternatif])->one()->nama_alternatif;
-
-        return $nama_alternatif ? $nama_alternatif : '';
-    }
 }
