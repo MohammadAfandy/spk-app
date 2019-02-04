@@ -14,11 +14,12 @@ use yii\helpers\Url;
 $this->title = ($id) ? 'Kriteria' . ' - ' . $data_spk[$id]->nama_spk : 'Kriteria';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="kriteria-index">
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body" style="margin-top: 30px;">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="row" style="margin-top: 30px;">
+    <div class="row">
         <div class="col-lg-2">
             <label>PILIH NAMA SPK</label>
         </div>
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if ($id): ?>
         <?php
-            Modal::begin(['id' =>'modal', 'size' => 'modal-lg',]);
+            Modal::begin(['id' =>'modal', 'size' => 'modal-md',]);
             Modal::end();
         ?>
 
@@ -46,10 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
             $tabindex = 1;
             echo GridView::widget([
                 'dataProvider' => $dataProvider,
-                // 'filterModel' => $searchModel,
+                'layout' => '{items}',
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-        
                     [
                         'header' => 'Nama Kriteria' . '<span class="pull-right">' . 
                             Html::button('Edit All', [
@@ -189,6 +189,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $this->registerJs(
     '
+
     $("#pilih_spk").on("change", function() {
         window.location.href = "' .Url::to(['index']). '/" + this.value;
     });
@@ -294,7 +295,7 @@ $this->registerJs(
 
     $(document).on("click", ".show-modal", function(e) {
         e.preventDefault();
-        $("#modal").modal("show").find(".modal-content").load($(this).attr("href"));
+        $("#modal").modal("show").find(".modal-content").attr("data-href", $(this).attr("href")).load($(this).attr("href"));
     });
 
     $("#modal").on("hidden.bs.modal", function () {

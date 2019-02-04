@@ -89,10 +89,12 @@ class Penilaian extends \yii\db\ActiveRecord
             $arr_jml_nilai[] = count(json_decode($pen->penilaian, true));
         }
 
-        if (in_array($jml_kriteria, $arr_jml_nilai)) {
-            return true;
-        } else {
-            return false;
+        foreach ($arr_jml_nilai as $jml) {
+            if ($jml_kriteria != $jml) {
+                return false;
+            }
         }
+        
+        return true;
     }
 }

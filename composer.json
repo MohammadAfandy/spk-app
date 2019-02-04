@@ -22,7 +22,8 @@
         "fedemotta/yii2-widget-datatables": "*",
         "mpdf/mpdf": "*",
         "macgyer/yii2-materializecss": "*",
-        "mdmsoft/yii2-admin": "~2.0"
+        "mdmsoft/yii2-admin": "~2.0",
+        "dmstr/yii2-adminlte-asset": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -9,11 +9,11 @@ use yii\grid\GridView;
 $this->title = 'Alternatif';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="alternatif-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="row" style="margin-top: 30px;">
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body" style="margin-top: 30px;">
+    <div class="row">
         <div class="col-lg-2">
             <label>PILIH NAMA SPK</label>
         </div>
@@ -26,21 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
         <p>
             <?= Html::a('Tambah Alternatif', ['create', 'id' => $id], ['class' => 'btn btn-success']) ?>
         </p>
-    
-        <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-    
-                    'nama_alternatif',
-                    'keterangan:ntext',
-                    'created_date',
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
+
+                        'nama_alternatif',
+                        'keterangan:ntext',
+                        'created_date',
                     //'updated_date',
-    
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
+
+                        ['class' => 'yii\grid\ActionColumn'],
+                    ],
+                ]); ?>
     <?php endif; ?>
 </div>
 

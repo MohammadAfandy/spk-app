@@ -26,9 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
 }
 </style>
 
-<div class="laporan-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body">
 
     <form>
         <div class="row" style="margin-top: 30px;">
@@ -47,11 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if ($spk && $metode): ?>
         <?php if (Kriteria::cekBobotKosong($spk)): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
-                <strong>Perhatian ! </strong>Data bobot kriteria masih ada yang belum diset atau 0, harap cek <?= Html::a('Data Kriteria', ['kriteria/index', 'id' => $spk]); ?>
+                <strong>Perhatian ! </strong>Data bobot kriteria masih ada yang belum diset atau 0, harap cek <?= Html::a('Data Kriteria', ['kriteria/index', 'id' => $spk]) ?>
             </div>
         <?php elseif (!Penilaian::cekKriteriaSesuaiPenilaian($spk, count($kriteria))): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
-                <strong>Perhatian ! </strong>Data penilaian yang diinput tidak sesuai dengan jumlah kriteria, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]); ?>
+                <strong>Perhatian ! </strong>Data penilaian yang diinput tidak sesuai dengan jumlah kriteria, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]) ?>
             </div>
         <?php else: ?>
             <div class="alert alert-info" style="margin-top: 20px">
@@ -103,7 +104,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]),
                     ];
                 }
-    
                 echo \yii\bootstrap\Tabs::widget([
                     'items' => $items,
                 ]);

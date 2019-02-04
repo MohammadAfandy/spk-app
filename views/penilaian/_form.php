@@ -81,7 +81,12 @@ use yii\bootstrap\ActiveForm;
         <?php endforeach; ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <div class="col-sm-offset-6 col-lg-1">
+                <?= Html::a('Kembali', ['index', 'id' => $id], ['class' => 'btn btn-danger']) ?>
+            </div>
+            <div class="col-lg-1">
+                <?= Html::submitButton('Tambah', ['class' => 'btn btn-success']) ?>
+            </div>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -5,14 +5,15 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Spk */
 
-$this->title = 'Update Spk: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Spks', 'url' => ['index']];
+$this->title = 'Update SPK: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'SPK', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="spk-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body">
 
     <?= $this->render('_form', [
         'model' => $model,

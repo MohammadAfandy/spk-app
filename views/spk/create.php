@@ -5,13 +5,14 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Spk */
 
-$this->title = 'Create Spk';
-$this->params['breadcrumbs'][] = ['label' => 'Spks', 'url' => ['index']];
+$this->title = 'Tambah SPK';
+$this->params['breadcrumbs'][] = ['label' => 'SPK', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="spk-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body">
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -10,9 +10,10 @@ use yii\grid\GridView;
 $this->title = 'Sistem Penunjang Keputusan';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="spk-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body">
 
     <p>
         <?= Html::a('Tambah SPK', ['create'], ['class' => 'btn btn-success']) ?>

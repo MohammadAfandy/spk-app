@@ -10,11 +10,12 @@ use yii\grid\GridView;
 $this->title = ($id) ? 'Penilaian - ' . \app\models\Spk::namaSpk($id) : 'Penilaian';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="penilaian-index">
+<div class="box-header with-border">
+    <h2 class="box-title"><?= Html::encode($this->title) ?></h2>
+</div>
+<div class="box-body" style="margin-top: 30px;">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="row" style="margin-top: 30px;">
+    <div class="row">
         <div class="col-lg-2">
             <label>PILIH NAMA SPK</label>
         </div>
