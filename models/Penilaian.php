@@ -78,4 +78,21 @@ class Penilaian extends \yii\db\ActiveRecord
 
         return null;
     }
+
+    public static function cekKriteriaSesuaiPenilaian($id_spk, $jml_kriteria)
+    {
+        $penilaian = self::find()->where(['id_spk' => $id_spk])->all();
+        $kriteria = Kriteria::find()->where(['id_spk' => $id_spk])->all();
+        $arr_jml_nilai = [];
+
+        foreach ($penilaian as $key => $pen) {
+            $arr_jml_nilai[] = count(json_decode($pen->penilaian, true));
+        }
+
+        if (in_array($jml_kriteria, $arr_jml_nilai)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

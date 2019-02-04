@@ -28,32 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php if ($id): ?>
-        <p>
-            <?php
-            Modal::begin([
-                'header' => '<h2>Tambah Kriteria - ' . \app\models\Spk::namaSpk($id) . '</h2>',
-                'id' => 'modal_tambah',
-                'size' => 'modal-lg',
-                'toggleButton' => [
-                    'label' => 'Tambah Kriteria',
-                    'class' => 'btn btn-success',
-                    'disabled' => Helper::checkRoute('admin-role') ? false : true,
-                ],
-            ]);
-    
-            echo $this->render('_form', [
-                'model' => $model,
-                'data_spk' => $data_spk,
-                'id' => $id,
-            ]);
-    
-            Modal::end();
-            ?>
-        </p>
         <?php
-            Modal::begin(['id' =>'modal_crips', 'size' => 'modal-lg',]);
+            Modal::begin(['id' =>'modal', 'size' => 'modal-lg',]);
             Modal::end();
         ?>
+
+        <p>
+            <?= Html::a('Tambah Kriteria', ['create', 'id' => $id], ['class' => 'btn btn-success show-modal']) ?>
+        </p>
 
         <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
             <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
@@ -183,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'template' => Helper::filterActionColumn('{crips} {delete}'),
                         'buttons' => [
                             'crips' => function ($url, $model, $key) {
-                                return Html::a('Crips', $url, ['class' => 'btn btn-xs btn-primary show-modal-crips']);
+                                return Html::a('Crips', $url, ['class' => 'btn btn-xs btn-primary show-modal']);
                             },
                             'delete' => function ($url, $model, $key) {
                                 return Html::a('Delete', $url, [
@@ -310,12 +292,12 @@ $this->registerJs(
         $(this).attr("data-max", (100 - total) + parseInt(this.value));
     });
 
-    $(document).on("click", ".show-modal-crips", function(e) {
+    $(document).on("click", ".show-modal", function(e) {
         e.preventDefault();
-        $("#modal_crips").modal("show").find(".modal-content").load($(this).attr("href"));
+        $("#modal").modal("show").find(".modal-content").load($(this).attr("href"));
     });
 
-    $("#modal_crips").on("hidden.bs.modal", function () {
+    $("#modal").on("hidden.bs.modal", function () {
         $(this).find(".modal-content").empty();
     });
 

@@ -13,27 +13,25 @@ use yii\bootstrap\ActiveForm;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 ?>
+<div class="panel-body">
+    <div class="crips-form">
 
-<div class="kriteria-crips" style="margin: 50px;">
-
-    <h1><?= 'Data Crips - ' . $model->nama_kriteria?></h1>
-    <div class="panel-body">
+        <h3><?= 'Data Crips - ' . $model->nama_kriteria?></h3>
         <?php
         $form = ActiveForm::begin([
             'action' => ['crips', 'id' => $id],
-            'options' => [
-                'enctype' => 'multipart/form-data',
-            ],
             'layout' => 'horizontal',
         ]);
         ?>
-
+    
         <?= $form->field($model, 'nama_kriteria')->textInput(['disabled' => true]) ?>
+    
         <div class="form-group">
             <div class="col-sm-offset-9">
                 <button type="button" id="btn_tambah_crips"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
         </div>
+
         <div id="form-crips">
             <?php $id_crips = 1 ?>
             <?php if (!empty($model->crips)): ?>
@@ -66,11 +64,11 @@ use yii\bootstrap\ActiveForm;
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <div class="col-sm-offset-8">
+                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            </div>
         </div>
-
         <?php ActiveForm::end(); ?>
-
     </div>
 </div>
 <?php

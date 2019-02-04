@@ -82,6 +82,11 @@ class KriteriaController extends Controller
             }
 
         }
+
+        return $this->renderAjax('modal/_create', [
+            'model' => $model,
+            'id' => $id,
+        ]);
     }
 
     /**
@@ -121,7 +126,7 @@ class KriteriaController extends Controller
             if (!empty($post_data['Crips'])) {
                 $crips = [];
                 foreach ($post_data['Crips'] as $key => $post_crips) {
-                    $crips[$post_crips['nama_crips']] = $post_crips['nilai_crips'];
+                    $crips[trim($post_crips['nama_crips'])] = $post_crips['nilai_crips'];
                 }
 
                 if (!empty($crips)) {
@@ -136,7 +141,7 @@ class KriteriaController extends Controller
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        return $this->renderAjax('crips', [
+        return $this->renderAjax('modal/_crips', [
             'model' => $model,
             'id' => $id,
         ]);

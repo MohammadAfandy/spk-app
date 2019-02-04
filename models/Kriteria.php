@@ -102,4 +102,20 @@ class Kriteria extends \yii\db\ActiveRecord
             return $nilai_crips;
         }
     }
+
+    public static function cekBobotKosong($id_spk)
+    {
+        $arr_bobot = [];
+        $kriteria = self::find()->select('bobot')->where(['id_spk' => $id_spk])->asArray()->all();
+        
+        foreach ($kriteria as $key => $kri) {
+            $arr_bobot[] = $kri['bobot'];
+        }
+
+        if (in_array(0, $arr_bobot)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

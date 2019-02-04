@@ -4,7 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'spk-saw',
+    'id' => 'spk-app',
     'name' => 'Aplikasi Sistem Penunjang Keputusan',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
