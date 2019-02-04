@@ -1,11 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use app\components\Helpers;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Penilaian */
 
-$this->title = 'Tambah Penilaian - ' . \app\models\Spk::namaSpk($id);
+$this->title = 'Tambah Penilaian - ' . Helpers::getNamaSpkByIdSpk($id);
 $this->params['breadcrumbs'][] = ['label' => 'Penilaian', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -4,15 +4,19 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 use yii\bootstrap\Modal;
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $model app\models\Kriteria */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="box-header with-border">
-    <h2 class="box-title"><?= 'Tambah Kriteria - SPK ' . \app\models\Spk::namaSpk($id) ?></h2>
+    <h2 class="box-title"><?= 'Tambah Kriteria - SPK ' . Helpers::getNamaSpkByIdSpk($id) ?></h2>
 </div>
 <div class="box-body">
+    <div style="margin: 10px; color: red;">
+        <strong>Perhatian ! </strong>Menambah Data Kriteria Akan Mereset Seluruh Bobot Kriteria
+    </div>
     <?php
     $form = ActiveForm::begin([
         'action' => ['create', 'id' => $id],

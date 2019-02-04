@@ -1,11 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use app\components\Helpers;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Alternatif */
 
-$this->title = 'Tambah Alternatif - ' . \app\models\Spk::namaSpk($id);
+$this->title = 'Tambah Alternatif - ' . Helpers::getNamaSpkByIdSpk($id);
 $this->params['breadcrumbs'][] = ['label' => 'Alternatif', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

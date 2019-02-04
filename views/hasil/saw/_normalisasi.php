@@ -1,3 +1,7 @@
+<?php
+use app\components\Helpers;
+?>
+
 <table class="table table-striped table-bordered">
     <thead>
         <th>No</th>
@@ -12,7 +16,7 @@
         <?php foreach($normalisasi as $key => $norm): ?>
             <tr>
                 <td><?= $no ?></td>
-                <td><?= app\models\Penilaian::namaAlternatif($key) ?></td>
+                <td><?= Helpers::getNamaAlternatifByIdPenilaian($key) ?></td>
                 <?php foreach ($norm as $n): ?>
                     <td><?= round($n, 3) ?></td>
                 <?php endforeach; ?>

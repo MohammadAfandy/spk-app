@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $model app\models\Penilaian */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -20,72 +21,60 @@ use yii\bootstrap\ActiveForm;
         ]);
         ?>
 
-        <?php if ($model->isNewRecord): ?>
+        <?php if (($model->isNewRecord && $alternatif) || !$model->isNewRecord): ?>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
-                    <?= Html::textInput('nama_spk', \app\models\Spk::namaSpk($id), ['disabled' => true, 'class' => 'form-control']) ?>
+                    <?= Html::textInput('nama_spk', Helpers::getNamaSpkByIdSpk($model->isNewRecord ? $id : $model->id_spk), ['disabled' => true, 'class' => 'form-control']) ?>
                 </div>
             </div>
-                <?php if ($alternatif): ?>
-                    <?= $form->field($model, 'id_alternatif')->dropDownList($alternatif, ['prompt' => '--PILIH-']) ?>
-                <?php else: ?>
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-6">
-                            Tidak Bisa Menambah Data. Data Alternatif Untuk SPK ini Sudah Digunakan Semua
-                        </div>
+            <?php if ($model->isNewRecord): ?>
+                <?= $form->field($model, 'id_alternatif')->dropDownList($alternatif, ['prompt' => '--PILIH-']) ?>
+            <?php else: ?>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <?= Html::textInput('nama_alternatif', Helpers::getNamaAlternatifByIdAlternatif($model->id_alternatif), ['class' => 'form-control', 'disabled' => true]) ?>
                     </div>
-                <?php endif; ?>
+                </div>
+            <?php endif; ?>
+            <?php foreach ($kriteria as $key => $kri): ?>
+                <div class="form-group">
+                    <label class="control-label col-sm-3"><?= $kri->nama_kriteria; ?></label>
+                    <div class="col-sm-6">
+                        <?php if (!empty(Helpers::getCrips($kri->id))): ?>
+                            <?= Html::dropDownList(
+                                'Penilaian[penilaian][' . $kri->id . ']',
+                                isset($nilai[$kri->id]) ? $nilai[$kri->id] : '',
+                                Helpers::getCrips($kri->id),
+                                [
+                                    'type' => 'number',
+                                    'class' => 'form-control',
+                                ]
+                            ); ?>
+                        <?php else: ?>
+                            <?= Html::textInput(
+                                'Penilaian[penilaian][' . $kri->id . ']',
+                                isset($nilai[$kri->id]) ? $nilai[$kri->id] : '',
+                                [
+                                    'type' => 'number',
+                                    'class' => 'form-control',
+                                ]
+                            ); ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         <?php else: ?>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <?= Html::textInput('nama_spk', \app\models\Spk::namaSpk($model->id_spk), ['disabled' => true, 'class' => 'form-control']) ?>
-                </div>
-            </div>
-            <?php // echo $form->field(s$model, 'id_alternatif')->textInput(['disabled' => true]) ?>
-
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <?= Html::textInput('nama_alternatif', \app\models\Penilaian::namaAlternatif($model->id), ['disabled' => true, 'class' => 'form-control']) ?>
-                </div>
-            </div>
+            <h4 style="color:red">Tidak Bisa Menambah Data. Semua Data Alternatif Untuk SPK <?= Helpers::getNamaSpkByIdSpk($id) ?> Sudah Digunakan</h4>
         <?php endif; ?>
 
-        <?php foreach ($kriteria as $key => $kri): ?>
-            <div class="form-group">
-                <label class="control-label col-sm-3"><?= $kri->nama_kriteria; ?></label>
-                <div class="col-sm-6">
-                    <?php if (!empty(app\models\Kriteria::getCrips($kri->id))): ?>
-                        <?= Html::dropDownList(
-                            'Penilaian[penilaian][' . $kri->id . ']',
-                            isset($nilai[$kri->id]) ? $nilai[$kri->id] : '',
-                            app\models\Kriteria::getCrips($kri->id),
-                            [
-                                'type' => 'number',
-                                'class' => 'form-control',
-                                'disabled' => $alternatif || !$model->isNewRecord ? false : true,
-                            ]
-                        ); ?>
-                    <?php else: ?>
-                        <?= Html::textInput(
-                            'Penilaian[penilaian][' . $kri->id . ']',
-                            isset($nilai[$kri->id]) ? $nilai[$kri->id] : '',
-                            [
-                                'type' => 'number',
-                                'class' => 'form-control',
-                                'disabled' => $alternatif || !$model->isNewRecord ? false : true,
-                            ]
-                        ); ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endforeach; ?>
-
         <div class="form-group">
-            <div class="col-sm-offset-6 col-lg-1">
-                <?= Html::a('Kembali', ['index', 'id' => $id], ['class' => 'btn btn-danger']) ?>
-            </div>
-            <div class="col-lg-1">
-                <?= Html::submitButton('Tambah', ['class' => 'btn btn-success']) ?>
+            <div class="col-sm-5 pull-right">
+                <?= Html::a('Kembali', ($model->isNewRecord) ? ['index', 'id' => $id] : ['index', 'id' => $model->id_spk], ['class' => 'btn btn-danger']) ?>
+                <?php if (($model->isNewRecord && $alternatif) || !$model->isNewRecord): ?>
+                    <?= Html::submitButton(($model->isNewRecord) ? 'Tambah' : 'Update', ['class' => 'btn btn-success',]); ?>
+                <?php else: ?>
+                    <?= Html::a('Tambah Data Alternatif', ['alternatif/create', 'id' => $id], ['class' => 'btn btn-info']) ?>
+                <?php endif; ?>
             </div>
         </div>
 

@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PenilaianSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = ($id) ? 'Penilaian - ' . \app\models\Spk::namaSpk($id) : 'Penilaian';
+$this->title = ($id) ? 'Penilaian - ' . Helpers::getNamaSpkByIdSpk($id) : 'Penilaian';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box-header with-border">
@@ -44,6 +45,7 @@ $this->registerJs(
     '
 
     $("#pilih_spk").on("change", function() {
+        showLoading();
         window.location.href = "' . \yii\helpers\Url::to(['index']) . '/" + this.value;
     });
 

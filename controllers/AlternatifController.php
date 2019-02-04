@@ -113,6 +113,7 @@ class AlternatifController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'id' => $id,
         ]);
     }
 

@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use app\components\Helpers;
 ?>
 <table class="table table-hover table-bordered">
     <thead>
@@ -23,7 +24,7 @@ use yii\helpers\Html;
                     <td>
                         <?php
                         echo (isset($nilai[$pen->id][$kri->id])) 
-                        ? app\models\Kriteria::nilaiToCrips($nilai[$pen->id][$kri->id], $kri->id) : '-';
+                        ? Helpers::nilaiToCrips($nilai[$pen->id][$kri->id], $kri->id) : '-';
                         ?>
                     </td>
                 <?php endforeach; ?>

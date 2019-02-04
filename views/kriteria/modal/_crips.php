@@ -2,10 +2,6 @@
 
 use yii\web\View;
 use yii\helpers\Html;
-use yii\grid\GridView;
-use app\models\Kriteria;
-use yii\bootstrap\Modal;
-use mdm\admin\components\Helper;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 /* @var $this yii\web\View */
@@ -29,7 +25,7 @@ use yii\bootstrap\ActiveForm;
             <?= $form->field($model, 'nama_kriteria')->textInput(['disabled' => true]) ?>
         </div>
         <div class="col-sm-1">
-            <button type="button" id="btn_tambah_crips" class="btn btn-box-tool"><span class="glyphicon glyphicon-plus"></span></button>
+            <button type="button" id="btn_tambah_crips" class="btn btn-box-tool"><i class="fa fa-lg fa-plus-square"></i></button>
         </div>
     </div>
 
@@ -56,7 +52,7 @@ use yii\bootstrap\ActiveForm;
                         ]) ?>
                     </div>
                     <div class="col-sm-1">
-                        <button type="button" class="btn btn-box-tool btn-hapus-crips" data-id="<?= $id_crips ?>"><span class="glyphicon glyphicon-minus"></span></button>
+                        <button type="button" class="btn btn-box-tool btn-hapus-crips" data-id="<?= $id_crips ?>"><i class="fa fa-lg fa-minus-square"></i></button>
                     </div>
                 </div>
                 <?php $id_crips++; ?>
@@ -66,7 +62,7 @@ use yii\bootstrap\ActiveForm;
 
     <div class="pull-right">
         <?= Html::button('Reset', ['class' => 'btn btn-danger', 'id' => 'btn_reset_crips']) ?>
-        <?= Html::submitButton('Tambah', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -99,7 +95,7 @@ $this->registerJs(
                             ]) . '
                     </div>
                     <div class="col-sm-1">
-                        <button type="button" class="btn btn-box-tool btn-hapus-crips" data-id=` + id_crips + `><span class="glyphicon glyphicon-minus"></span></button>
+                        <button type="button" class="btn btn-box-tool btn-hapus-crips" data-id=` + id_crips + `><i class="fa fa-lg fa-minus-square"></i></button>
                     </div>
                 </div>
             `);

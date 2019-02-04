@@ -51,15 +51,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'header' => 'Nama Kriteria' . '<span class="pull-right">' . 
-                            Html::button('Edit All', [
-                                'class' => 'btn btn-success btn-xs',
-                                'id' => 'btn_edit_all_nama',
-                            ]) . ' ' .
-                            Html::button('Cancel All', [
-                                'class' => 'btn btn-danger btn-xs',
-                                'id' => 'btn_cancel_all_nama',
-                            ])
+                        'header' => 'Nama Kriteria' . '<span class="pull-right">' .
+                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_nama"></i>' . ' ' .
+                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_nama"></i>'
+                            // Html::button('Edit All', [
+                            //     'class' => 'fa fa-edit btn-xs',
+                            //     'id' => 'btn_edit_all_nama',
+                            // ]) . ' ' .
+                            // Html::button('Cancel All', [
+                            //     'class' => 'btn btn-danger btn-xs',
+                            //     'id' => 'btn_cancel_all_nama',
+                            // ])
                         ,
                         'attribute' => 'nama_kriteria',
                         'value' => function($model) use (&$tabindex) {
@@ -71,14 +73,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-id' => $model->id,
                                 'data-oldval' => $model->nama_kriteria,
                             ]);
-                            $edit = Html::button('Edit', [
-                                'class' => 'btn btn-success btn-xs btn_edit_nama',
-                                'data-id' => $model->id,
-                            ]);
-                            $cancel = Html::button('X', [
-                                'class' => 'btn btn-danger btn-xs btn_cancel_nama',
-                                'data-id' => $model->id,
-                            ]);
+                            $edit = '<i class="fa fa-edit btn_edit_nama" data-id=' .$model->id. '></i>';
+                            $cancel = '<i class="fa fa-close btn_cancel_nama" data-id=' .$model->id. '></i>';
+                            // $edit = Html::button('Edit', [
+                            //     'class' => 'btn btn-success btn-xs btn_edit_nama',
+                            //     'data-id' => $model->id,
+                            // ]);
+                            // $cancel = Html::button('X', [
+                            //     'class' => 'btn btn-danger btn-xs btn_cancel_nama',
+                            //     'data-id' => $model->id,
+                            // ]);
                             $tabindex++;
                             return $nama . '<span class="pull-right">' . $edit . ' '. $cancel;
                         },
@@ -86,14 +90,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'header' => 'Type Kriteria' . '<span class="pull-right">' . 
-                            Html::button('Edit All', [
-                                'class' => 'btn btn-success btn-xs',
-                                'id' => 'btn_edit_all_type',
-                            ]) . ' ' .
-                            Html::button('Cancel All', [
-                                'class' => 'btn btn-danger btn-xs',
-                                'id' => 'btn_cancel_all_type',
-                            ])
+                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_type"></i>' . ' ' .
+                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_type"></i>'
+                            // Html::button('Edit All', [
+                            //     'class' => 'btn btn-success btn-xs',
+                            //     'id' => 'btn_edit_all_type',
+                            // ]) . ' ' .
+                            // Html::button('Cancel All', [
+                            //     'class' => 'btn btn-danger btn-xs',
+                            //     'id' => 'btn_cancel_all_type',
+                            // ])
                         ,
                         'attribute' => 'type',
                         'value' => function($model) use (&$tabindex) {
@@ -111,14 +117,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-oldval' => $model->type,
                                 ]
                             );
-                            $edit = Html::button('Edit', [
-                                'class' => 'btn btn-success btn-xs btn_edit_type',
-                                'data-id' => $model->id,
-                            ]);
-                            $cancel = Html::button('X', [
-                                'class' => 'btn btn-danger btn-xs btn_cancel_type',
-                                'data-id' => $model->id,
-                            ]);
+                            $edit = '<i class="fa fa-edit btn_edit_type" data-id=' .$model->id. '></i>';
+                            $cancel = '<i class="fa fa-close btn_cancel_type" data-id=' .$model->id. '></i>';
+                            // $edit = Html::button('Edit', [
+                            //     'class' => 'btn btn-success btn-xs btn_edit_type',
+                            //     'data-id' => $model->id,
+                            // ]);
+                            // $cancel = Html::button('X', [
+                            //     'class' => 'btn btn-danger btn-xs btn_cancel_type',
+                            //     'data-id' => $model->id,
+                            // ]);
                             $tabindex++;
                             return $type . '<span class="pull-right">' . $edit . ' '. $cancel;
                         },
@@ -126,14 +134,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'header' => 'Bobot' . '<span class="pull-right">' . 
-                            Html::button('Edit All', [
-                                'class' => 'btn btn-success btn-xs',
-                                'id' => 'btn_edit_all_bobot',
-                            ]) . ' ' .
-                            Html::button('Cancel All', [
-                                'class' => 'btn btn-danger btn-xs',
-                                'id' => 'btn_cancel_all_bobot',
-                            ])
+                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_bobot"></i>' . ' ' .
+                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_bobot"></i>'
+                            // Html::button('Edit All', [
+                            //     'class' => 'btn btn-success btn-xs',
+                            //     'id' => 'btn_edit_all_bobot',
+                            // ]) . ' ' .
+                            // Html::button('Cancel All', [
+                            //     'class' => 'btn btn-danger btn-xs',
+                            //     'id' => 'btn_cancel_all_bobot',
+                            // ])
                         ,
                         'attribute' => 'bobot',
                         'value' => function($model) use (&$tabindex) {
@@ -145,14 +155,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-id' => $model->id,
                                 'data-oldval' => $model->bobot * 100,
                             ]);
-                            $edit = Html::button('Edit', [
-                                'class' => 'btn btn-success btn-xs btn_edit_bobot',
-                                'data-id' => $model->id,
-                            ]);
-                            $cancel = Html::button('X', [
-                                'class' => 'btn btn-danger btn-xs btn_cancel_bobot',
-                                'data-id' => $model->id,
-                            ]);
+                            $edit = '<i class="fa fa-edit btn_edit_bobot" data-id=' .$model->id. '></i>';
+                            $cancel = '<i class="fa fa-close btn_cancel_bobot" data-id=' .$model->id. '></i>';
+                            // $edit = Html::button('Edit', [
+                            //     'class' => 'fa fa-edit btn_edit_bobot',
+                            //     'data-id' => $model->id,
+                            // ]);
+                            // $cancel = Html::button('X', [
+                            //     'class' => 'btn btn-danger btn-xs btn_cancel_bobot',
+                            //     'data-id' => $model->id,
+                            // ]);
                             $tabindex++;
                             return $bobot . ' %<span class="pull-right">' . $edit . ' '. $cancel;
                         },
@@ -189,8 +201,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $this->registerJs(
     '
-
     $("#pilih_spk").on("change", function() {
+        showLoading();
         window.location.href = "' .Url::to(['index']). '/" + this.value;
     });
     
@@ -274,6 +286,9 @@ $this->registerJs(
         if (input > max) {
             this.value = max;
         }
+        if (this.value === "") {
+            this.value = 0;
+        }
         let total = 0;
         $(".bobot_kriteria").each(function() {
             total += parseInt(this.value);
@@ -304,14 +319,39 @@ $this->registerJs(
 
     $("#btn_set").on("click", function() {
         let total = 0;
+        let cek_nama = cek_type = cek_bobot = true; //kondisi ga bisa submit
+
+        $(".nama_kriteria").each(function() {
+            if (!$(this).is(":disabled")) {
+                cek_nama = false; // kondisi normal
+            }
+        });
+
+        $(".type_kriteria").each(function() {
+            if (!$(this).is(":disabled")) {
+                cek_type = false; // kondisi normal
+            }
+        });
+
         $(".bobot_kriteria").each(function() {
+            if (!$(this).is(":disabled")) {
+                cek_bobot = false; // kondisi bisa submit
+            }
             total += parseInt(this.value);
         });
-        if (total == 100) {
+
+        if (cek_nama == true && cek_type == true && cek_bobot == true) {
+            $("#error_bobot").html("Tidak Ada Data yang Diedit");
+            return false;
+        } else if ((cek_nama == false || cek_type == false) && cek_bobot == true) {
             return true;
         } else {
-            $("#error_bobot").html("Total Bobot Harus 100 %. Total Saat Ini " + total + " %");
-            return false;
+            if (total == 100) {
+                return true;
+            } else {
+                $("#error_bobot").html("Total Bobot Harus 100 %. Total Saat Ini " + total + " %");
+                return false;   
+            }
         }
     });
 

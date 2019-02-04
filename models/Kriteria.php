@@ -73,49 +73,5 @@ class Kriteria extends \yii\db\ActiveRecord
             ],
         ];
     }
-
-    public static function getCrips($id_kriteria)
-    {
-        $crips = json_decode(self::findOne($id_kriteria)->crips, true);
-
-        return $crips ? array_flip($crips) : '';
-    }
-
-    /**
-     * Convert nilai to nama crips
-     * @param double nilai_crips
-     * @param int id_kriteria
-     * @return string nama_crips
-     */
-    public static function nilaiToCrips($nilai_crips, $id_kriteria)
-    {
-        $crips = json_decode(self::findOne($id_kriteria)->crips, true);
-        
-        if ($crips) {
-            $nama_crips = array_search($nilai_crips, $crips);
-            if ($nama_crips) {
-                return $nama_crips;   
-            } else {
-                return $nilai_crips;
-            }   
-        } else {
-            return $nilai_crips;
-        }
-    }
-
-    public static function cekBobotKosong($id_spk)
-    {
-        $arr_bobot = [];
-        $kriteria = self::find()->select('bobot')->where(['id_spk' => $id_spk])->asArray()->all();
-        
-        foreach ($kriteria as $key => $kri) {
-            $arr_bobot[] = $kri['bobot'];
-        }
-
-        if (in_array(0, $arr_bobot)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    
 }

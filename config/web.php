@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'spk-app',
-    'name' => 'Aplikasi Sistem Penunjang Keputusan',
+    'name' => 'Sistem Penunjang Keputusan',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -54,6 +54,9 @@ $config = [
         ],
     ],
     'components' => [
+        'helpers' => [
+            'class' => 'app\components\Helpers',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '9DYHBCWrOtQbyJIiNH0HKKcSQvOsFE4i',

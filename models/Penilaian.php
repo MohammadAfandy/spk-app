@@ -57,14 +57,6 @@ class Penilaian extends \yii\db\ActiveRecord
         return $this->hasOne(Alternatif::className(), ['id' => 'id_alternatif']);
     }
 
-    public static function namaAlternatif($id_penilaian)
-    {
-        $id_alternatif = self::findOne($id_penilaian)->id_alternatif;
-        $nama_alternatif = Alternatif::findOne($id_alternatif)->nama_alternatif;
-
-        return $nama_alternatif ? $nama_alternatif : '';
-    }
-
     public static function cekAlternatif($id)
     {
         $alternatif_exist = self::find()->select(['id_alternatif'])->where(['id_spk' => $id])->column();
@@ -79,22 +71,5 @@ class Penilaian extends \yii\db\ActiveRecord
         return null;
     }
 
-    public static function cekKriteriaSesuaiPenilaian($id_spk, $jml_kriteria)
-    {
-        $penilaian = self::find()->where(['id_spk' => $id_spk])->all();
-        $kriteria = Kriteria::find()->where(['id_spk' => $id_spk])->all();
-        $arr_jml_nilai = [];
-
-        foreach ($penilaian as $key => $pen) {
-            $arr_jml_nilai[] = count(json_decode($pen->penilaian, true));
-        }
-
-        foreach ($arr_jml_nilai as $jml) {
-            if ($jml_kriteria != $jml) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
+    
 }

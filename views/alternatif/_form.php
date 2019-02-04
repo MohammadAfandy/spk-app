@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $model app\models\Alternatif */
 /* @var $form yii\widgets\ActiveForm */
@@ -21,17 +21,13 @@ use yii\bootstrap\ActiveForm;
         ?>
         <div class="form-group">
             <?php if ($model->isNewRecord): ?>
-
                 <div class="col-sm-offset-3 col-sm-6">
-                    <?= Html::textInput('nama_spk', \app\models\Spk::namaSpk($id), ['disabled' => true, 'class' => 'form-control']) ?>
+                    <?= Html::textInput('nama_spk', Helpers::getNamaSpkByIdSpk($id), ['disabled' => true, 'class' => 'form-control']) ?>
                 </div>
-            
             <?php else: ?>
-
                 <div class="col-sm-offset-3 col-sm-6">
-                    <?= Html::textInput('nama_spk', \app\models\Spk::namaSpk($model->id_spk), ['disabled' => true, 'class' => 'form-control']) ?>
+                    <?= Html::textInput('nama_spk', Helpers::getNamaSpkByIdSpk($model->id_spk), ['disabled' => true, 'class' => 'form-control']) ?>
                 </div>
-
             <?php endif; ?>
         </div>
 
@@ -40,11 +36,9 @@ use yii\bootstrap\ActiveForm;
         <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>
 
         <div class="form-group">
-            <div class="col-sm-offset-6 col-lg-1">
-                <?= Html::a('Kembali', ['index', 'id' => $id], ['class' => 'btn btn-danger']) ?>
-            </div>
-            <div class="col-lg-1">
-                <?= Html::submitButton('Tambah', ['class' => 'btn btn-success']) ?>
+            <div class="col-sm-5 pull-right">
+                <?= Html::a('Kembali', ($model->isNewRecord) ? ['index', 'id' => $id] : ['index', 'id' => $model->id_spk], ['class' => 'btn btn-danger']) ?>
+                <?= Html::submitButton(($model->isNewRecord) ? 'Tambah' : 'Update', ['class' => 'btn btn-success btn-post']) ?>
             </div>
         </div>
 

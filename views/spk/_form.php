@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Spk */
 /* @var $form yii\widgets\ActiveForm */
@@ -23,13 +22,11 @@ use yii\bootstrap\ActiveForm;
         <?= $form->field($model, 'nama_spk')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>
-        
+
         <div class="form-group">
-            <div class="col-sm-offset-6 col-lg-1">
+            <div class="col-sm-5 pull-right">
                 <?= Html::a('Kembali', ['index'], ['class' => 'btn btn-danger']) ?>
-            </div>
-            <div class="col-lg-1">
-                <?= Html::submitButton('Tambah', ['class' => 'btn btn-success']) ?>
+                <?= Html::submitButton(($model->isNewRecord) ? 'Tambah' : 'Update', ['class' => 'btn btn-success']) ?>
             </div>
         </div>
 

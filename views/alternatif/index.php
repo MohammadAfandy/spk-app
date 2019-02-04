@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-body" style="margin-top: 30px;">
     <div class="row">
         <div class="col-lg-2">
-            <label>PILIH NAMA SPK</label>
+            <label>Pilih SPK</label>
         </div>
         <div class="col-lg-4">
             <?= Html::dropDownList('spk', $id, \yii\helpers\ArrayHelper::map($data_spk, 'id', 'nama_spk'), ['prompt' => '--PILIH--', 'class' => 'form-control', 'id' => 'pilih_spk']) ?>
@@ -48,6 +48,7 @@ $this->registerJs(
     '
 
     $("#pilih_spk").on("change", function() {
+        showLoading();
         window.location.href = "' . \yii\helpers\Url::to(['index']) . '/" + this.value;
     });
 

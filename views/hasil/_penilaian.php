@@ -1,3 +1,7 @@
+<?php
+use app\components\Helpers;
+?>
+
 <table class="table table-striped table-bordered">
     <thead>
         <th>No</th>
@@ -12,10 +16,10 @@
         <?php foreach($nilai as $key => $nil): ?>
             <tr>
                 <td><?= $no ?></td>
-                <td><?= app\models\Penilaian::namaAlternatif($key) ?></td>
+                <td><?= Helpers::getNamaAlternatifByIdPenilaian($key) ?></td>
                 <?php foreach ($nil as $k => $n): ?>
                     <td>
-                        <?= app\models\Kriteria::nilaiToCrips($n, $k) ?>
+                        <?= Helpers::nilaiToCrips($n, $k) ?>
                     </td>
                 <?php endforeach; ?>
                 <?php $no++; ?>

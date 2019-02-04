@@ -25,13 +25,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'nama_spk',
             'keterangan:ntext',
             'created_date',
-            'updated_date',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                'header' => 'Aksi',
+                'buttons' => [
+                    'delete' => function($url, $model){
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'data' => [
+                                'confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ? Menghapus Data SPK Akan Menghapus Seluruh Data yang Berhubungan Dengan SPK',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                ],
+            ],
         ],
     ]); ?>
 </div>

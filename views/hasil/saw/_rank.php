@@ -1,3 +1,7 @@
+<?php
+use app\components\Helpers;
+?>
+
 <table class="table table-striped table-bordered">
     <thead>
         <th>Peringkat</th>
@@ -10,7 +14,7 @@
         <?php foreach($rank as $key => $r): ?>
             <tr>
                 <td><?= $no ?></td>
-                <td><?= \app\models\Penilaian::namaAlternatif($key) ?></td>
+                <td><?= Helpers::getNamaAlternatifByIdPenilaian($key) ?></td>
                 <td><?= round($r, 3) ?></td>
                 <?php $no++; ?>
             </tr>

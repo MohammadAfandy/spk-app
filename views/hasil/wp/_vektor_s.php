@@ -1,3 +1,7 @@
+<?php
+use app\components\Helpers;
+?>
+
 <table class="table table-striped table-bordered">
     <thead>
         <th>No</th>
@@ -10,7 +14,7 @@
         <?php foreach($vektor_s as $key => $vs): ?>
             <tr>
                 <td><?= $no ?></td>
-                <td><?= \app\models\Penilaian::namaAlternatif($key) ?></td>
+                <td><?= Helpers::getNamaAlternatifByIdPenilaian($key) ?></td>
                 <td><?= round($vs, 3) ?></td>
                 <?php $no++; ?>
             </tr>

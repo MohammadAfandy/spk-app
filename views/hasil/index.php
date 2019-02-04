@@ -2,15 +2,13 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use app\models\Penilaian;
-use app\models\Spk;
-use app\models\Kriteria;
 
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PenilaianSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = ($spk) ? 'Hasil - SPK ' . Spk::namaSpk($spk) . ' - Metode ' . strtoupper($metode) : 'Hasil';
+$this->title = ($spk) ? 'Hasil - SPK ' . Helpers::getNamaSpkByIdSpk($spk) . ' - Metode ' . strtoupper($metode) : 'Hasil';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
@@ -40,23 +38,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::dropDownList('metode', $metode, ['saw' => 'SAW (Simple Additive Weighting)', 'wp' => 'WP (Weighted Product)'], ['prompt' => '--PILIH METODE--', 'class' => 'form-control', 'id' => 'pilih_metode']) ?>
             </div>
             <div class="col-lg-3">
-                <?= Html::submitButton('PROSES', ['class' => 'btn btn-success']) ?>
+                <?= Html::submitButton('Proses', ['class' => 'btn btn-success']) ?>
             </div>
         </div>
     </form>
 
     <?php if ($spk && $metode): ?>
-        <?php if (Kriteria::cekBobotKosong($spk)): ?>
+        <?php if (Helpers::cekBobotKosong($spk)): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
-                <strong>Perhatian ! </strong>Data bobot kriteria masih ada yang belum diset atau 0, harap cek <?= Html::a('Data Kriteria', ['kriteria/index', 'id' => $spk]) ?>
+                <strong>Perhatian ! </strong>Data bobot kriteria masih ada yang belum diset atau bernilai 0, harap cek <?= Html::a('Data Kriteria', ['kriteria/index', 'id' => $spk]) ?>
             </div>
-        <?php elseif (!Penilaian::cekKriteriaSesuaiPenilaian($spk, count($kriteria))): ?>
+        <?php elseif (!Helpers::cekKriteriaSesuaiPenilaian($spk, count($kriteria))): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
                 <strong>Perhatian ! </strong>Data penilaian yang diinput tidak sesuai dengan jumlah kriteria, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]) ?>
             </div>
         <?php else: ?>
             <div class="alert alert-info" style="margin-top: 20px">
-                Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Spk::namaSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= ($metode === 'saw') ? ucwords(Penilaian::namaAlternatif(key($hasil['rank']))) : ucwords(Penilaian::namaAlternatif(key($hasil['vektor_v']))) ?></strong>
+                Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Helpers::getNamaSpkByIdSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= ($metode === 'saw') ? ucwords(Helpers::getNamaAlternatifByIdPenilaian(key($hasil['rank']))) : ucwords(Helpers::getNamaAlternatifByIdPenilaian(key($hasil['vektor_v']))) ?></strong>
             </div>
             <div class="panel-body" style="margin-top: 30px;">
                 <?php

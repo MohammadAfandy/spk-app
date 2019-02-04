@@ -20,9 +20,14 @@ use mdm\admin\components\Helper;
             ['label' => 'Penilaian', 'url' => ['/penilaian/index']],
             ['label' => 'Hasil', 'url' => ['/hasil/index']],
             ['label' => 'User Management', 'url' => ['/admin/assignment/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
         ];
 
         $menuItems = Helper::filter($menuItems);
+        if (Yii::$app->user->isGuest) {
+            $menuItems[] = ['label' => 'Home', 'url' => ['/site/index']];
+            $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
+        }
         ?>
         <?= dmstr\widgets\Menu::widget(
             [

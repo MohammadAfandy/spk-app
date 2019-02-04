@@ -45,19 +45,6 @@ class SpkController extends Controller
     }
 
     /**
-     * Displays a single Spk model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Spk model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -67,7 +54,7 @@ class SpkController extends Controller
         $model = new Spk();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
