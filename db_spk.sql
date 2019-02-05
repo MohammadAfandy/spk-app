@@ -45,7 +45,7 @@ CREATE TABLE `tbl_alternatif` (
   PRIMARY KEY (`id`),
   KEY `FK_alternatif_spk` (`id_spk`),
   CONSTRAINT `FK_alternatif_spk` FOREIGN KEY (`id_spk`) REFERENCES `tbl_spk` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_alternatif` */
 
@@ -71,7 +71,13 @@ insert  into `tbl_alternatif`(`id`,`nama_alternatif`,`keterangan`,`id_spk`,`crea
 (41,'Sidah','',8,'2019-02-03 17:24:33','2019-02-03 17:24:33'),
 (42,'Sari Madinah','',8,'2019-02-03 17:24:50','2019-02-03 17:24:50'),
 (43,'Rozi','',8,'2019-02-03 17:25:03','2019-02-03 17:25:03'),
-(44,'Murti','',8,'2019-02-03 17:25:13','2019-02-03 17:25:13');
+(44,'Murti','',8,'2019-02-03 17:25:13','2019-02-03 17:25:13'),
+(45,'Afandy','',7,'2019-02-05 02:17:42','2019-02-05 02:17:42'),
+(46,'Muhidin','',7,'2019-02-05 02:35:48','2019-02-05 02:35:48'),
+(57,'Xenia','',9,'2019-02-05 15:03:23','2019-02-05 15:03:31'),
+(58,'BMW','',9,'2019-02-05 15:05:57','2019-02-05 15:05:57'),
+(59,'Daihatsu','',9,'2019-02-05 15:20:29','2019-02-05 15:20:29'),
+(60,'Jessica','',7,'2019-02-05 15:53:08','2019-02-05 15:53:08');
 
 /*Table structure for table `tbl_auth_assignment` */
 
@@ -90,7 +96,8 @@ CREATE TABLE `tbl_auth_assignment` (
 
 insert  into `tbl_auth_assignment`(`item_name`,`user_id`,`created_at`) values 
 ('admin-role','1',1549009491),
-('dev-role','2',1549009947);
+('dev-role','2',1549009947),
+('guest-role','3',1549377160);
 
 /*Table structure for table `tbl_auth_item` */
 
@@ -218,7 +225,8 @@ insert  into `tbl_auth_item`(`name`,`type`,`description`,`rule_name`,`data`,`cre
 ('admin-role',1,'Role for Administrative Purpose',NULL,NULL,1549009485,1549009485),
 ('dev-permission',2,'Permission for Developer',NULL,NULL,1549009515,1549009515),
 ('dev-role',1,'Role for Developer',NULL,NULL,1549009539,1549009539),
-('user-permission',2,NULL,NULL,NULL,1549009440,1549009440);
+('guest-permission',2,NULL,NULL,NULL,1549009440,1549377088),
+('guest-role',1,NULL,NULL,NULL,1549377149,1549377149);
 
 /*Table structure for table `tbl_auth_item_child` */
 
@@ -246,7 +254,14 @@ insert  into `tbl_auth_item_child`(`parent`,`child`) values
 ('admin-permission','/user/*'),
 ('admin-role','admin-permission'),
 ('dev-permission','/*'),
-('dev-role','dev-permission');
+('dev-role','dev-permission'),
+('guest-permission','/alternatif/index'),
+('guest-permission','/hasil/index'),
+('guest-permission','/kriteria/index'),
+('guest-permission','/penilaian/index'),
+('guest-permission','/site/*'),
+('guest-permission','/spk/index'),
+('guest-role','guest-permission');
 
 /*Table structure for table `tbl_auth_rule` */
 
@@ -278,26 +293,29 @@ CREATE TABLE `tbl_kriteria` (
   PRIMARY KEY (`id`),
   KEY `FK_kriteria_spk` (`id_spk`),
   CONSTRAINT `FK_kriteria_spk` FOREIGN KEY (`id_spk`) REFERENCES `tbl_spk` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_kriteria` */
 
 insert  into `tbl_kriteria`(`id`,`nama_kriteria`,`type`,`bobot`,`crips`,`id_spk`,`created_date`,`updated_date`) values 
-(26,'Harga',0,0.25,NULL,6,'2019-02-03 16:05:51','2019-02-03 16:20:01'),
-(27,'Nilai investasi 10 tahun ke depan',1,0.15,NULL,6,'2019-02-03 16:06:14','2019-02-03 16:20:01'),
-(28,'Daya dukung terhadap produktivitas perusahaan',1,0.3,'{\"Kurang Mendukung\":\"1\",\"Cukup Mendukung\":\"2\",\"Sangat Mendukung\":\"3\"}',6,'2019-02-03 16:12:44','2019-02-03 16:20:01'),
-(29,'Prioritas kebutuhan',0,0.25,'{\"Sangat Berprioritas\":\"1\",\"Berprioritas\":\"2\",\"Cukup Berprioritas\":\"3\"}',6,'2019-02-03 16:12:54','2019-02-03 16:20:01'),
-(30,'Ketersediaan atau kemudahan',1,0.05,'{\"Sulit Diperoleh\":\"1\",\"Mudah Diperoleh\":\"2\",\"Sangat Mudah Diperoleh\":\"3\"}',6,'2019-02-03 16:13:04','2019-02-03 16:20:01'),
-(31,'Penghasilan Orang Tua',0,0.3,'{\"<= Rp 1.000.000\":\"20\",\"<= Rp 1.500.000\":\"40\",\"<= Rp 3.000.000\":\"60\",\"<= Rp 4.500.000\":\"80\",\"> Rp 4.500.000\":\"100\"}',7,'2019-02-03 16:30:52','2019-02-03 17:21:32'),
-(32,'Semester',1,0.25,'{\"Semester 4\\t\":\"20\",\"Semester 5\\t\":\"40\",\"Semester 6\":\"60\",\"Semester 7\":\"80\",\"Semester 8\":\"100\"}',7,'2019-02-03 16:31:02','2019-02-03 17:21:32'),
-(33,'Tanggungan Orang Tua',1,0.15,'{\"1 Orang\":\"20\",\"2 Orang\":\"40\",\"3 Orang\":\"60\",\"4 Orang\":\"80\",\"> 4 Orang\":\"100\"}',7,'2019-02-03 16:31:10','2019-02-03 17:21:32'),
-(35,'Nilai',1,0.2,'{\"< 2,75\\t\":\"20\",\"< 3\":\"40\",\"< 3,25\":\"60\",\"< 3,5\":\"80\",\">= 3,5\":\"100\"}',7,'2019-02-03 16:31:26','2019-02-03 17:21:32'),
-(37,'Tingkah Laku',1,0.1,'{\"Buruk\":\"25\",\"Cukup\":\"50\",\"Baik\":\"75\",\"Sangat Baik\":\"100\"}',7,'2019-02-03 16:45:55','2019-02-03 17:21:32'),
-(38,'Penghasilan orang tua',0,0.3,NULL,8,'2019-02-03 17:25:37','2019-02-03 17:26:25'),
-(39,'IPK',1,0.25,NULL,8,'2019-02-03 17:25:44','2019-02-03 17:26:25'),
-(40,'Listrik',0,0.15,NULL,8,'2019-02-03 17:25:52','2019-02-03 17:26:25'),
-(41,'Tanggungan Orang tua',1,0.2,NULL,8,'2019-02-03 17:26:00','2019-02-03 17:26:25'),
-(42,'Organisasi',1,0.1,NULL,8,'2019-02-03 17:26:07','2019-02-03 17:26:25');
+(26,'Harga',0,0.2,NULL,6,'2019-02-03 16:05:51','2019-02-05 02:30:06'),
+(27,'Nilai investasi 10 tahun ke depan',1,0.1,NULL,6,'2019-02-03 16:06:14','2019-02-05 02:30:06'),
+(28,'Daya dukung terhadap produktivitas perusahaan',1,0.25,'{\"Kurang Mendukung\":\"1\",\"Cukup Mendukung\":\"2\",\"Sangat Mendukung\":\"3\"}',6,'2019-02-03 16:12:44','2019-02-05 02:30:06'),
+(29,'Prioritas kebutuhan',0,0.2,'{\"Sangat Berprioritas\":\"1\",\"Berprioritas\":\"2\",\"Cukup Berprioritas\":\"3\"}',6,'2019-02-03 16:12:54','2019-02-05 02:30:06'),
+(30,'Ketersediaan atau kemudahan',1,0.25,'{\"Sulit Diperoleh\":\"1\",\"Mudah Diperoleh\":\"2\",\"Sangat Mudah Diperoleh\":\"3\"}',6,'2019-02-03 16:13:04','2019-02-05 02:30:06'),
+(31,'Penghasilan Orang Tua',1,0.1,'{\"<= Rp 1.000.000\":\"20\",\"<= Rp 1.500.000\":\"40\",\"<= Rp 3.000.000\":\"60\",\"<= Rp 4.500.000\":\"80\",\"> Rp 4.500.000\":\"100\"}',7,'2019-02-03 16:30:52','2019-02-05 16:08:02'),
+(32,'Semester',0,0.2,'{\"Semester 4\\t\":\"20\",\"Semester 5\\t\":\"40\",\"Semester 6\":\"60\",\"Semester 7\":\"80\",\"Semester 8\":\"100\"}',7,'2019-02-03 16:31:02','2019-02-05 16:08:02'),
+(33,'Tanggungan Orang Tua',0,0.12,'{\"1 Orang\":\"20\",\"2 Orang\":\"40\",\"3 Orang\":\"60\",\"4 Orang\":\"80\",\"> 4 Orang\":\"100\"}',7,'2019-02-03 16:31:10','2019-02-05 16:08:02'),
+(35,'Nilai',0,0.23,'{\"< 2,75\\t\":\"20\",\"< 3\":\"40\",\"< 3,25\":\"60\",\"< 3,5\":\"80\",\">= 3,5\":\"100\"}',7,'2019-02-03 16:31:26','2019-02-05 16:08:02'),
+(37,'Tingkah Laku',0,0.11,'{\"Buruk\":\"25\",\"Cukup\":\"50\",\"Baik\":\"75\",\"Sangat Baik\":\"100\"}',7,'2019-02-03 16:45:55','2019-02-05 16:08:02'),
+(38,'Penghasilan Orang Tua',0,0.2,'',8,'2019-02-03 17:25:37','2019-02-05 15:17:03'),
+(39,'IPK',1,0.15,'',8,'2019-02-03 17:25:44','2019-02-05 15:16:08'),
+(40,'Listrik',0,0.2,NULL,8,'2019-02-03 17:25:52','2019-02-05 02:36:45'),
+(41,'Tanggungan Orang Tua',1,0.15,'',8,'2019-02-03 17:26:00','2019-02-05 15:16:24'),
+(42,'Organisasi',1,0.3,'',8,'2019-02-03 17:26:07','2019-02-05 15:17:40'),
+(45,'Organisasi',0,0.24,'{\"Kurang Aktif\":\"40\",\"Aktif\":\"60\",\"Sangat Aktif\":\"80\"}',7,'2019-02-05 00:59:04','2019-02-05 16:08:02'),
+(48,'Ukuran',0,0.5,'{\"Kecil\":\"50\",\"Besar\":\"100\"}',9,'2019-02-05 14:22:30','2019-02-05 15:51:22'),
+(49,'Harga',1,0.5,NULL,9,'2019-02-05 15:04:15','2019-02-05 15:51:22');
 
 /*Table structure for table `tbl_migration` */
 
@@ -333,7 +351,7 @@ CREATE TABLE `tbl_penilaian` (
   KEY `FK_penilaian_spk` (`id_spk`),
   CONSTRAINT `FK_penilaian_alternatif` FOREIGN KEY (`id_alternatif`) REFERENCES `tbl_alternatif` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_penilaian_spk` FOREIGN KEY (`id_spk`) REFERENCES `tbl_spk` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_penilaian` */
 
@@ -342,10 +360,8 @@ insert  into `tbl_penilaian`(`id`,`id_spk`,`id_alternatif`,`penilaian`,`created_
 (29,6,16,'{\"26\":\"500000000\",\"27\":\"200\",\"28\":\"2\",\"29\":\"3\",\"30\":\"2\"}',NULL,NULL),
 (30,6,19,'{\"26\":\"200000000\",\"27\":\"10\",\"28\":\"3\",\"29\":\"1\",\"30\":\"3\"}',NULL,NULL),
 (31,6,20,'{\"26\":\"350000000\",\"27\":\"100\",\"28\":\"3\",\"29\":\"1\",\"30\":\"2\"}',NULL,NULL),
-(32,7,24,'{\"31\":\"80\",\"32\":\"20\",\"33\":\"20\",\"35\":\"20\",\"37\":\"50\"}',NULL,NULL),
-(33,7,25,'{\"31\":\"40\",\"32\":\"40\",\"33\":\"40\",\"35\":\"40\",\"37\":\"75\"}',NULL,NULL),
-(34,7,26,'{\"31\":\"80\",\"32\":\"60\",\"33\":\"60\",\"35\":\"80\",\"37\":\"75\"}',NULL,NULL),
-(35,7,27,'{\"31\":\"80\",\"32\":\"80\",\"33\":\"80\",\"35\":\"80\",\"37\":\"25\"}',NULL,NULL),
+(32,7,24,'{\"31\":\"80\",\"32\":\"20\",\"33\":\"20\",\"35\":\"20\",\"37\":\"50\",\"45\":\"60\"}',NULL,NULL),
+(33,7,25,'{\"31\":\"40\",\"32\":\"40\",\"33\":\"40\",\"35\":\"40\",\"37\":\"75\",\"45\":\"80\"}',NULL,NULL),
 (37,8,36,'{\"38\":\"1\",\"39\":\"4\",\"40\":\"4\",\"41\":\"3\",\"42\":\"2\"}',NULL,NULL),
 (38,8,37,'{\"38\":\"1\",\"39\":\"4\",\"40\":\"4\",\"41\":\"3\",\"42\":\"2\"}',NULL,NULL),
 (39,8,38,'{\"38\":\"1\",\"39\":\"4\",\"40\":\"4\",\"41\":\"3\",\"42\":\"2\"}',NULL,NULL),
@@ -355,11 +371,18 @@ insert  into `tbl_penilaian`(`id`,`id_spk`,`id_alternatif`,`penilaian`,`created_
 (44,8,42,'{\"38\":\"1\",\"39\":\"5\",\"40\":\"3\",\"41\":\"1\",\"42\":\"2\"}',NULL,NULL),
 (45,8,43,'{\"38\":\"2\",\"39\":\"4\",\"40\":\"3\",\"41\":\"1\",\"42\":\"1\"}',NULL,NULL),
 (46,8,44,'{\"38\":\"4\",\"39\":\"4\",\"40\":\"3\",\"41\":\"3\",\"42\":\"2\"}',NULL,NULL),
-(47,7,32,'{\"31\":\"60\",\"32\":\"60\",\"33\":\"60\",\"35\":\"20\",\"37\":\"75\"}',NULL,NULL),
-(48,7,31,'{\"31\":\"80\",\"32\":\"100\",\"33\":\"20\",\"35\":\"60\",\"37\":\"50\"}',NULL,NULL),
-(49,7,35,'{\"31\":\"100\",\"32\":\"20\",\"33\":\"100\",\"35\":\"100\",\"37\":\"100\"}',NULL,NULL),
-(50,7,33,'{\"31\":\"60\",\"32\":\"80\",\"33\":\"60\",\"35\":\"40\",\"37\":\"75\"}',NULL,NULL),
-(51,7,34,'{\"31\":\"80\",\"32\":\"40\",\"33\":\"60\",\"35\":\"80\",\"37\":\"100\"}',NULL,NULL);
+(48,7,31,'{\"31\":\"80\",\"32\":\"100\",\"33\":\"20\",\"35\":\"60\",\"37\":\"50\",\"45\":\"40\"}',NULL,NULL),
+(49,7,35,'{\"31\":\"100\",\"32\":\"20\",\"33\":\"100\",\"35\":\"100\",\"37\":\"100\",\"45\":\"40\"}',NULL,NULL),
+(50,7,33,'{\"31\":\"60\",\"32\":\"80\",\"33\":\"60\",\"35\":\"40\",\"37\":\"75\",\"45\":\"60\"}',NULL,NULL),
+(51,7,34,'{\"31\":\"80\",\"32\":\"40\",\"33\":\"60\",\"35\":\"80\",\"37\":\"100\",\"45\":\"40\"}',NULL,NULL),
+(53,7,26,'{\"31\":\"20\",\"32\":\"20\",\"33\":\"20\",\"35\":\"20\",\"37\":\"25\",\"45\":\"40\"}',NULL,NULL),
+(54,7,27,'{\"31\":\"40\",\"32\":\"80\",\"33\":\"80\",\"35\":\"20\",\"37\":\"75\",\"45\":\"60\"}',NULL,NULL),
+(55,7,45,'{\"31\":\"20\",\"32\":\"40\",\"33\":\"20\",\"35\":\"100\",\"37\":\"75\",\"45\":\"60\"}',NULL,NULL),
+(56,7,46,'{\"31\":\"40\",\"32\":\"60\",\"33\":\"60\",\"35\":\"40\",\"37\":\"50\",\"45\":\"40\"}',NULL,NULL),
+(63,9,57,'{\"48\":\"100\",\"49\":\"500000000\"}',NULL,NULL),
+(67,9,59,'{\"48\":\"50\",\"49\":\"1000000000\"}',NULL,NULL),
+(69,7,60,'{\"31\":\"100\",\"32\":\"20\",\"33\":\"100\",\"35\":\"100\",\"37\":\"25\",\"45\":\"60\"}','2019-02-05 15:56:53','2019-02-05 15:56:53'),
+(70,7,32,'{\"31\":\"40\",\"32\":\"40\",\"33\":\"60\",\"35\":\"40\",\"37\":\"50\",\"45\":\"60\"}','2019-02-05 21:26:38','2019-02-05 21:26:38');
 
 /*Table structure for table `tbl_penilaian__hapus` */
 
@@ -390,14 +413,15 @@ CREATE TABLE `tbl_spk` (
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_spk` */
 
 insert  into `tbl_spk`(`id`,`nama_spk`,`keterangan`,`created_date`,`updated_date`) values 
 (6,'Investasi Perusahaan','SPK untuk menentukan Investasi Perusahaan','2019-02-03 16:03:32','2019-02-03 16:09:51'),
 (7,'Beasiswa Mahasiswa','SPK untuk menentukan mahasiswa yang menerima beasiswa','2019-02-03 16:29:11','2019-02-03 16:29:11'),
-(8,'Penerimaan Mahasiswa Baru','','2019-02-03 17:23:54','2019-02-03 17:23:54');
+(8,'Penerimaan Mahasiswa Baru','SPK untuk penerimaan mahasiswa baru','2019-02-03 17:23:54','2019-02-04 22:26:05'),
+(9,'Pembelian Mobil','SPK Pembelian Mobil','2019-02-05 02:56:17','2019-02-05 02:56:17');
 
 /*Table structure for table `tbl_user` */
 
@@ -414,13 +438,14 @@ CREATE TABLE `tbl_user` (
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tbl_user` */
 
 insert  into `tbl_user`(`id`,`username`,`password_hash`,`email`,`status`,`auth_key`,`password_reset_token`,`created_date`,`updated_date`) values 
 (1,'admin','$2y$13$CI7SCLrF8Jn82WmAXc9vh.vECX2vszlNTRfUoq3Oq6HVpV/oWQIr.','admin@spk-saw.com',10,'bCFg6Pr4bXqgeOpVIhaC3PtjQ_EHUdBs',NULL,'2019-02-01 14:46:28','2019-02-01 14:46:28'),
-(2,'developer','$2y$13$zjgl/EVWMgxNLXAAglUC4uyisqOaxkEE8h4mVaNZUqNhsfn.U2qie','dev@spk-saw.com',10,'-WO_e6xq8B1jQ15B0QreBWsphVQObkXc',NULL,'2019-02-01 15:27:49','2019-02-01 15:37:40');
+(2,'developer','$2y$13$zjgl/EVWMgxNLXAAglUC4uyisqOaxkEE8h4mVaNZUqNhsfn.U2qie','dev@spk-saw.com',10,'-WO_e6xq8B1jQ15B0QreBWsphVQObkXc',NULL,'2019-02-01 15:27:49','2019-02-05 16:11:04'),
+(3,'guest','$2y$13$CNhk6txvbMy.AO/nWkKMLuQ576FQy.50bGY2mTFj.gsST4Anl/jii','guest@spk-app.com',10,'-cGALJaSAADGx_s_Hh629dyJ50qr8lsu',NULL,'2019-02-05 21:27:57','2019-02-05 21:27:57');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
