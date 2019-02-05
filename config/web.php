@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'spk-app',
-    'name' => 'Sistem Penunjang Keputusan',
+    'name' => 'Sistem Pendukung Keputusan',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [

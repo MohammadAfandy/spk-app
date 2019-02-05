@@ -38,7 +38,7 @@ use app\components\Helpers;
         <div class="form-group">
             <div class="col-sm-5 pull-right">
                 <?= Html::a('Kembali', ($model->isNewRecord) ? ['index', 'id' => $id] : ['index', 'id' => $model->id_spk], ['class' => 'btn btn-danger']) ?>
-                <?= Html::submitButton(($model->isNewRecord) ? 'Tambah' : 'Update', ['class' => 'btn btn-success btn-post']) ?>
+                <?= Html::submitButton(($model->isNewRecord) ? 'Tambah' : 'Update', ['class' => 'btn btn-success']) ?>
             </div>
         </div>
 

@@ -38,13 +38,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::dropDownList('metode', $metode, ['saw' => 'SAW (Simple Additive Weighting)', 'wp' => 'WP (Weighted Product)'], ['prompt' => '--PILIH METODE--', 'class' => 'form-control', 'id' => 'pilih_metode']) ?>
             </div>
             <div class="col-lg-3">
-                <?= Html::submitButton('Proses', ['class' => 'btn btn-success']) ?>
+                <?= Html::submitButton('Proses', ['class' => 'btn btn-success btn-block']) ?>
             </div>
         </div>
     </form>
 
     <?php if ($spk && $metode): ?>
-        <?php if (Helpers::cekBobotKosong($spk)): ?>
+        <?php if (!$penilaian): ?>
+            <div class="alert alert-danger" style="margin-top: 20px">
+                <strong>Perhatian ! </strong>Data penilaian belum diisi untuk SPK ini, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]) ?>
+            </div>
+        <?php elseif (Helpers::cekBobotKosong($spk)): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
                 <strong>Perhatian ! </strong>Data bobot kriteria masih ada yang belum diset atau bernilai 0, harap cek <?= Html::a('Data Kriteria', ['kriteria/index', 'id' => $spk]) ?>
             </div>
@@ -54,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php else: ?>
             <div class="alert alert-info" style="margin-top: 20px">
-                Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Helpers::getNamaSpkByIdSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= ($metode === 'saw') ? ucwords(Helpers::getNamaAlternatifByIdPenilaian(key($hasil['rank']))) : ucwords(Helpers::getNamaAlternatifByIdPenilaian(key($hasil['vektor_v']))) ?></strong>
+                Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Helpers::getNamaSpkByIdSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= count($alt_terbaik) > 1 ? implode(' dan ', $alt_terbaik) : $alt_terbaik[0]; ?></strong>
             </div>
             <div class="panel-body" style="margin-top: 30px;">
                 <?php

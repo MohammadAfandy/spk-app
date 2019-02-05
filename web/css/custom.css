@@ -15,6 +15,9 @@
 .fa-edit, .fa-close {
     cursor: pointer;
 }
+.langkah li {
+    margin: 15px 0;
+}
 
 .fieldset{
     padding: .35em .625em .75em;

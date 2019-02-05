@@ -94,14 +94,19 @@ class PenilaianController extends Controller
         $post_data = Yii::$app->request->post();
 
         if (!empty($post_data)) {
-            $model->load($post_data);
-            $model->id_spk = $id;
-            $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);
+            $post_nilai = $this->cekPenilaianKriteria($post_data['Penilaian']['penilaian']);
             
-            if ($model->save()) {
-                return $this->redirect(['index', 'id' => $id]);
+            if ($post_nilai) {
+                $model->load($post_data);
+                $model->id_spk = $id;
+                $model->penilaian = json_encode($post_nilai);                
+                
+                if ($model->save()) {
+                    return $this->redirect(['index', 'id' => $id]);
+                }
+            } else {
+                Yii::$app->session->setFlash('failed', "Penilaian Kriteria Tidak Boleh Kosong");
             }
-
         }
 
         return $this->render('create', [
@@ -130,13 +135,18 @@ class PenilaianController extends Controller
         $post_data = Yii::$app->request->post();
 
         if (!empty($post_data)) {
-            $model->load($post_data);
-            $model->penilaian = json_encode($post_data['Penilaian']['penilaian']);
+            $post_nilai = $this->cekPenilaianKriteria($post_data['Penilaian']['penilaian']);
             
-            if ($model->save()) {
-                return $this->redirect(['index', 'id' => $model->id_spk]);
+            if ($post_nilai) {
+                $model->load($post_data);
+                $model->penilaian = json_encode($post_nilai);
+            
+                if ($model->save()) {
+                    return $this->redirect(['index', 'id' => $model->id_spk]);
+                }
+            } else {
+                Yii::$app->session->setFlash('failed', "Penilaian Kriteria Tidak Boleh Kosong");
             }
-
         }
 
         return $this->render('update', [
@@ -178,5 +188,16 @@ class PenilaianController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function cekPenilaianKriteria($penilaian)
+    {
+        foreach ($penilaian as $key => $pen) {
+            if (empty($pen) || !is_numeric($pen)) {
+                return false;
+            }
+        }
+
+        return $penilaian;
     }
 }

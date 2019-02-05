@@ -12,6 +12,7 @@ use app\models\Spk;
 use app\models\Kriteria;
 use yii\web\NotFoundHttpException;
 
+use app\components\Helpers;
 /**
  * HasilController 
  */
@@ -27,21 +28,25 @@ class HasilController extends Controller
         $spk = Yii::$app->request->get('spk');
         $metode = Yii::$app->request->get('metode');
 
-        $penilaian = $kriteria = $nilai = $hasil = null;
+        $penilaian = $kriteria = $nilai = $hasil = $alt_terbaik = null;
         $data_spk = Spk::find()->indexBy('id')->all();
 
         if ($spk && $metode) {
             $penilaian = Penilaian::find()->alias('p')->where(['p.id_spk' => $spk])->joinWith(['alternatif'])->all();
             $kriteria = Kriteria::find()->indexBy('id')->where(['id_spk' => $spk])->all();
+            
+            if ($penilaian) {
 
-            $nilai = $this->getNilai($penilaian);
+                $nilai = $this->getNilai($penilaian);
 
-            if ($metode === 'saw') {
-                $hasil = $this->generateSaw($nilai, $kriteria);
-            } else if ($metode === 'wp') {
-                $hasil = $this->generateWp($nilai, $kriteria);
+                if ($metode === 'saw') {
+                    $hasil = $this->generateSaw($nilai, $kriteria);
+                } else if ($metode === 'wp') {
+                    $hasil = $this->generateWp($nilai, $kriteria);
+                }
+
+                $alt_terbaik = $this->getAlternatifTerbaik($hasil, $metode);
             }
-
         }
 
         return $this->render('index', [
@@ -50,6 +55,7 @@ class HasilController extends Controller
             'kriteria' => $kriteria,
             'nilai' => $nilai,
             'hasil' => $hasil,
+            'alt_terbaik' => $alt_terbaik,
             'spk' => $spk,
             'metode' => $metode,
         ]);
@@ -151,6 +157,18 @@ class HasilController extends Controller
         }
         arsort($vektor_v);
         return $vektor_v;
+    }
+
+
+    public function getAlternatifTerbaik($hasil, $metode) {
+        $data = $metode === 'saw' ? $hasil['rank'] : $hasil['vektor_v'];
+        $bests = array_keys($data, max($data));
+
+        foreach ($bests as $key => $best) {
+            $bests[$key] = Helpers::getNamaAlternatifByIdPenilaian($best);
+        }
+
+        return $bests;
     }
     
 }

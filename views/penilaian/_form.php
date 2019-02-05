@@ -11,7 +11,11 @@ use app\components\Helpers;
 
 <div class="panel-body">
     <div class="penilaian-form">
-
+        <?php if (Yii::$app->session->hasFlash('failed')): ?>
+            <div class="alert alert-danger">
+                <?= Yii::$app->session->getFlash('failed') ?>
+            </div>
+        <?php endif; ?>
         <?php
         $form = ActiveForm::begin([
             'options' => [
@@ -21,7 +25,7 @@ use app\components\Helpers;
         ]);
         ?>
 
-        <?php if (($model->isNewRecord && $alternatif) || !$model->isNewRecord): ?>
+        <?php if (($model->isNewRecord && $alternatif && $kriteria) || (!$model->isNewRecord) && $kriteria): ?>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-6">
                     <?= Html::textInput('nama_spk', Helpers::getNamaSpkByIdSpk($model->isNewRecord ? $id : $model->id_spk), ['disabled' => true, 'class' => 'form-control']) ?>
@@ -46,6 +50,7 @@ use app\components\Helpers;
                                 isset($nilai[$kri->id]) ? $nilai[$kri->id] : '',
                                 Helpers::getCrips($kri->id),
                                 [
+                                    'prompt' => '--PILIH--',
                                     'type' => 'number',
                                     'class' => 'form-control',
                                 ]
@@ -63,8 +68,10 @@ use app\components\Helpers;
                     </div>
                 </div>
             <?php endforeach; ?>
+        <?php elseif (empty($kriteria)): ?>
+            <h4 style="color:red">Data Kriteria Untuk SPK <?= Helpers::getNamaSpkByIdSpk($model->isNewRecord ? $id : $model->id_spk) ?> Belum Ada</h4>
         <?php else: ?>
-            <h4 style="color:red">Tidak Bisa Menambah Data. Semua Data Alternatif Untuk SPK <?= Helpers::getNamaSpkByIdSpk($id) ?> Sudah Digunakan</h4>
+            <h4 style="color:red">Data Alternatif Untuk SPK <?= Helpers::getNamaSpkByIdSpk($id) ?> Tidak Ada Atau Sudah Digunakan Semua</h4>
         <?php endif; ?>
 
         <div class="form-group">

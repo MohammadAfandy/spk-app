@@ -4,6 +4,9 @@ namespace app\models;
 
 use Yii;
 use app\models\Alternatif;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+
 /**
  * This is the model class for table "{{%penilaian}}".
  *
@@ -49,6 +52,20 @@ class Penilaian extends \yii\db\ActiveRecord
             'penilaian' => 'Penilaian',
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_date', 'updated_date'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_date'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 

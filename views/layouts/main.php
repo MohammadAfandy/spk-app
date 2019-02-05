@@ -55,7 +55,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
         }
 
         $(document).on("submit", "form", function() {
-            $(this).find(":submit").attr("disabled", true).html("<span class=\'fa fa-spin fa-spinner\'></span> Processing..");
+            $(this).find(":submit").attr("disabled", true).html("<span class=\'fa fa-spin fa-spinner\'></span>Proses");
         });
 
         ',

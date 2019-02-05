@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\components\Helpers;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SpkSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Sistem Penunjang Keputusan';
+$this->title = 'Sistem Pendukung Keputusan';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box-header with-border">
@@ -27,7 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'nama_spk',
             'keterangan:ntext',
-            'created_date',
+            [
+                'attribute' => 'created_date',
+                'value' => function($model) {
+                    return Helpers::dateTimeIndonesia($model->created_date);
+                }
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -37,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete' => function($url, $model){
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
                             'data' => [
-                                'confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ? Menghapus Data SPK Akan Menghapus Seluruh Data yang Berhubungan Dengan SPK',
+                                'confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ? Menghapus Data SPK Akan Menghapus Seluruh Data yang Berhubungan Dengan SPK yang Dihapus',
                                 'method' => 'post',
                             ],
                         ]);
