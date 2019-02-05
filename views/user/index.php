@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 use mdm\admin\components\UserStatus;
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -38,10 +39,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->status === app\models\User::STATUS_ACTIVE ? 'ACTIVE' : 'NON ACTIVE';
                 },
             ],
-            'created_date',
-            'updated_date',
+            [
+                'attribute' => 'created_date',
+                'value' => function($model) {
+                    return Helpers::dateTimeIndonesia($model->created_date);
+                },
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                'header' => 'aksi',
+            ],
         ],
     ]); ?>
 </div>
