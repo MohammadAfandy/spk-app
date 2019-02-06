@@ -2,12 +2,12 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered dataTable">
     <thead>
         <th>No</th>
         <th>Nama Alternatif</th>
         <?php foreach ($kriteria as $kri): ?>
-            <th><?= $kri->nama_kriteria . '<br>('  . (($kri->type == 0) ? 'COST' : 'BENEFIT') . ' )' ?></th>
+            <th><?= $kri->nama_kriteria . '<br>('  . Helpers::getTypeKriteria($kri->type) . ')' ?></th>
         <?php endforeach; ?>
     </thead>
     <tbody>

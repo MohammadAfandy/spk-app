@@ -58,6 +58,19 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
             $(this).find(":submit").attr("disabled", true).html("<span class=\'fa fa-spin fa-spinner\'></span>Proses");
         });
 
+        // $(".dataTable thead th").each(function () {
+        //     var title = $(".dataTable tfoot th").eq($(this).index()).text();
+        //     $(this).append("<br><input type=\'text\' placeholder=\'Search \'+title+\' class=\'search-table\' />");
+        // });
+
+        $(".dataTable").DataTable();
+
+        // table.columns().eq(0).each(function(colIdx) {
+        //     $("input", table.column(colIdx).header()).on("keyup change", function() {
+        //         table.column(colIdx).search(this.value).draw();
+        //     });
+        // });
+
         ',
         \yii\web\View::POS_READY,
         'main-js'

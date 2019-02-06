@@ -2,7 +2,7 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered dataTable">
     <thead>
         <th>Peringkat</th>
         <th>Nama Alternatif</th>

@@ -1,7 +1,7 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+// $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'spk-app',
@@ -66,6 +66,7 @@ $config = [
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
+            'db' => 'dbUser',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
@@ -90,15 +91,22 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=db_spk',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'tablePrefix' => 'tbl_',
         ],
-        */
+        'dbUser' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=db_spk_user',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'tablePrefix' => 'tbl_',
+        ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             // Disable index.php
@@ -106,7 +114,7 @@ $config = [
             // Disable r= routes
             'enablePrettyUrl' => true,
             'rules' => [
-                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                // '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
@@ -114,7 +122,6 @@ $config = [
     ],
     'params' => $params,
 ];
-
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';

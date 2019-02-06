@@ -97,6 +97,24 @@ class SpkController extends Controller
     }
 
     /**
+     * Displays a single Spk model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        $alternatif = \app\models\Alternatif::find()->where(['id_spk' => $id])->asArray()->all();
+        $kriteria = \app\models\Kriteria::find()->where(['id_spk' => $id])->asArray()->all();
+
+        return $this->render('view', [
+            'id' => $id,
+            'alternatif' => $alternatif,
+            'kriteria' => $kriteria,
+        ]);
+    }
+
+    /**
      * Finds the Spk model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id

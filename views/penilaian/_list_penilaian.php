@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use app\components\Helpers;
 ?>
-<table class="table table-hover table-bordered">
+<table class="table table-hover table-bordered dataTable">
     <thead>
         <th>No</th>
         <th>Nama Alternatif</th>

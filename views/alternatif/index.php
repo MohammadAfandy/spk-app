@@ -42,19 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         [
-                            'class' => 'yii\grid\ActionColumn',
-                            'template' => '{update} {delete}',
+                            'class' => 'app\components\ActionColumn',
                             'header' => 'Aksi',
-                            'buttons' => [
-                                'delete' => function($url, $model){
-                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
-                                        'data' => [
-                                            'confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ? Menghapus Data Alternatif Akan Menghapus Seluruh Data yang Berhubungan Dengan Alternatif yang Dihapus',
-                                            'method' => 'post',
-                                        ],
-                                    ]);
-                                }
-                            ],
+                            'template' => '{update} {delete}'
                         ],
                     ],
                 ]); ?>

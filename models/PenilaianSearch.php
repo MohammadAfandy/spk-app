@@ -38,9 +38,12 @@ class PenilaianSearch extends Penilaian
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($id_spk, $params)
     {
-        $query = Penilaian::find();
+        $query = Penilaian::find()->where(['id_spk' => $id_spk]);;
+        $kriteria = \app\models\Kriteria::find()->where(['id_spk' => $id_spk])->all();
+
+        // print_r($kriteria);die();
 
         // add conditions that should always apply here
 

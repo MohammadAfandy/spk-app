@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 use yii\bootstrap\Modal;
+use app\models\Kriteria;
 use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $model app\models\Kriteria */
@@ -27,8 +28,8 @@ use app\components\Helpers;
 
     <?= $form->field($model, 'type')->dropDownList(
         [
-            app\models\Kriteria::COST => 'COST',
-            app\models\Kriteria::BENEFIT => 'BENEFIT',
+            Kriteria::COST => Helpers::getTypeKriteria(Kriteria::COST),
+            Kriteria::BENEFIT => Helpers::getTypeKriteria(Kriteria::BENEFIT),
         ],
         ['prompt' => '--PILIH-',]
     ) ?>

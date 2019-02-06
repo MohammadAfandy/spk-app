@@ -7,6 +7,7 @@ use app\models\Kriteria;
 use yii\bootstrap\Modal;
 use mdm\admin\components\Helper;
 use yii\helpers\Url;
+use app\components\Helpers;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\KriteriaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -106,8 +107,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             $type = Html::dropDownList('Kriteria[' .$model->id. '][type]',
                                 $model->type,
                                 [
-                                    Kriteria::COST => 'COST',
-                                    Kriteria::BENEFIT => 'BENEFIT',
+                                    Kriteria::COST => Helpers::getTypeKriteria(Kriteria::COST),
+                                    Kriteria::BENEFIT => Helpers::getTypeKriteria(Kriteria::BENEFIT),
                                 ],
                                 [
                                     'class' => 'type_kriteria',
@@ -172,7 +173,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
         
                     [
-                        'class' => 'yii\grid\ActionColumn',
+                        'class' => 'app\components\ActionColumn',
                         'header' => 'Aksi',
                         'template' => Helper::filterActionColumn('{crips} {delete}'),
                         'buttons' => [
