@@ -200,8 +200,8 @@ class Helpers extends \yii\base\Component
     public static function getCrips($id_kriteria)
     {
         $crips = json_decode(Kriteria::findOne($id_kriteria)->crips, true);
-        
-        return !empty($crips) ? $crips : null;
+
+        return !empty($crips) ? array_flip($crips) : null;
     }
 
 }
