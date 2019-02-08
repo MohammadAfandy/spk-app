@@ -194,31 +194,39 @@ class KriteriaController extends Controller
     {
         $model = Kriteria::find()->where(['id_spk' => $id_spk])->all();
 
-        if ($model) {
+        if (!empty($model)) {
             foreach ($model as $key => $kriteria) {
                 $kriteria->bobot = 0;
                 $kriteria->save();
             }
+            return true;
         }
+
+        return false;
     }
 
     public function deletePenilaian($id_kriteria)
     {
         $penilaian = Penilaian::find()->all();
 
-        foreach ($penilaian as $key => $pen) {
+        if (!empty($model)) {
+            foreach ($penilaian as $key => $pen) {
 
-            if (!empty($pen->penilaian)) {
-                $nilai = json_decode($pen->penilaian, true);
+                if (!empty($pen->penilaian)) {
+                    $nilai = json_decode($pen->penilaian, true);
 
-                if (array_key_exists($id_kriteria, $nilai)) {
-                    unset($nilai[$id_kriteria]);
-                    $model = Penilaian::findOne($pen->id);
-                    $model->penilaian = json_encode($nilai);
-                    $model->save();
+                    if (array_key_exists($id_kriteria, $nilai)) {
+                        unset($nilai[$id_kriteria]);
+                        $model = Penilaian::findOne($pen->id);
+                        $model->penilaian = json_encode($nilai);
+                        $model->save();
+                    }
                 }
+
             }
-    
+            return true;
         }
+
+        return false;
     }
 }

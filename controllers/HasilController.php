@@ -151,9 +151,10 @@ class HasilController extends Controller
     public function getVektorV($vektor_s)
     {
         $vektor_v = [];
+        $sum = array_sum($vektor_s);
 
         foreach ($vektor_s as $key => $vek) {
-            $vektor_v[$key] = $vek / array_sum($vektor_s);
+            $vektor_v[$key] = $vek / $sum;
         }
         arsort($vektor_v);
         return $vektor_v;
