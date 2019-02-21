@@ -53,8 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
                     [
                         'header' => 'Nama Kriteria' . '<span class="pull-right">' .
-                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_nama"></i>' . ' ' .
-                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_nama"></i>'
+                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_nama" title="Edit All Nama"></i>' . ' ' .
+                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_nama" title="Cancel All Nama"></i>'
                             // Html::button('Edit All', [
                             //     'class' => 'fa fa-edit btn-xs',
                             //     'id' => 'btn_edit_all_nama',
@@ -74,8 +74,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-id' => $model->id,
                                 'data-oldval' => $model->nama_kriteria,
                             ]);
-                            $edit = '<i class="fa fa-edit btn_edit_nama" data-id=' .$model->id. '></i>';
-                            $cancel = '<i class="fa fa-close btn_cancel_nama" data-id=' .$model->id. '></i>';
+                            $edit = '<i class="fa fa-edit btn_edit_nama" data-id="' .$model->id. '" title="Edit Nama"></i>';
+                            $cancel = '<i class="fa fa-close btn_cancel_nama" data-id="' .$model->id. '" title="Cancel Nama"></i>';
                             // $edit = Html::button('Edit', [
                             //     'class' => 'btn btn-success btn-xs btn_edit_nama',
                             //     'data-id' => $model->id,
@@ -91,8 +91,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'header' => 'Type Kriteria' . '<span class="pull-right">' . 
-                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_type"></i>' . ' ' .
-                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_type"></i>'
+                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_type" title="Edit All Type"></i>' . ' ' .
+                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_type" title="Cancel All Type"></i>'
                             // Html::button('Edit All', [
                             //     'class' => 'btn btn-success btn-xs',
                             //     'id' => 'btn_edit_all_type',
@@ -118,8 +118,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-oldval' => $model->type,
                                 ]
                             );
-                            $edit = '<i class="fa fa-edit btn_edit_type" data-id=' .$model->id. '></i>';
-                            $cancel = '<i class="fa fa-close btn_cancel_type" data-id=' .$model->id. '></i>';
+                            $edit = '<i class="fa fa-edit btn_edit_type" data-id="' .$model->id. '" title="Edit Type"></i>';
+                            $cancel = '<i class="fa fa-close btn_cancel_type" data-id="' .$model->id. '" title="Cancel Type"></i>';
                             // $edit = Html::button('Edit', [
                             //     'class' => 'btn btn-success btn-xs btn_edit_type',
                             //     'data-id' => $model->id,
@@ -135,8 +135,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'header' => 'Bobot' . '<span class="pull-right">' . 
-                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_bobot"></i>' . ' ' .
-                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_bobot"></i>'
+                        '<i class="fa fa-edit fa-lg" id="btn_edit_all_bobot" title="Edit All Bobot"></i>' . ' ' .
+                        '<i class="fa fa-close fa-lg" id="btn_cancel_all_bobot" title="Cancel All Bobot"></i>'
                             // Html::button('Edit All', [
                             //     'class' => 'btn btn-success btn-xs',
                             //     'id' => 'btn_edit_all_bobot',
@@ -156,8 +156,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data-id' => $model->id,
                                 'data-oldval' => $model->bobot * 100,
                             ]);
-                            $edit = '<i class="fa fa-edit btn_edit_bobot" data-id=' .$model->id. '></i>';
-                            $cancel = '<i class="fa fa-close btn_cancel_bobot" data-id=' .$model->id. '></i>';
+                            $edit = '<i class="fa fa-edit btn_edit_bobot" data-id="' .$model->id. '" title="Edit Bobot"></i>';
+                            $cancel = '<i class="fa fa-close btn_cancel_bobot" data-id="' .$model->id. '" title="Cancel Bobot"></i>';
                             // $edit = Html::button('Edit', [
                             //     'class' => 'fa fa-edit btn_edit_bobot',
                             //     'data-id' => $model->id,
@@ -206,7 +206,7 @@ $this->registerJs(
         showLoading();
         window.location.href = "' .Url::to(['index']). '/" + this.value;
     });
-    
+
     $(document).on("click", ".btn_edit_nama", function() {
         let id = $(this).data("id");
         let input = $(".nama_kriteria[data-id="+id+"]");
