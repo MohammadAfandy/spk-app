@@ -143,7 +143,15 @@ class HasilController extends Controller
             ],
         ];
 
-        return Helpers::generateExcel($filename, $data_excel);
+        $style_excel = [
+            'B1:B30' => [
+                'alignment' => [
+                    'horizontal' => 'left'
+                ],
+            ],
+        ];
+
+        return Helpers::generateExcel($filename, $data_excel, $style_excel);
     }
 
     public function getHasil($id_spk, $metode)

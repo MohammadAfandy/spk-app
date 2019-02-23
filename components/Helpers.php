@@ -54,21 +54,35 @@ class Helpers extends \yii\base\Component
      * @param array style
      * @return excel
      */
-    public static function generateExcel($filename, $data = [], $style = [])
+    public static function generateExcel($filename, $data = [], $styles = [])
     {
-        // var_dump(count($data['Penilaian']['titles']));die();
         foreach ($data as $key => $dat) {
             $column = count($data[$key]['titles']);
             $row = count($data[$key]['data']) + 1;
             $all_cell = 'A1:' . chr($column + 64) . $row;
             $header_cell = 'A1:' . chr($column + 64) . '1';
             $content_cell = 'A2:' . chr($column + 64) . $row;
+
+            // foreach ($styles as $old_key => $value) {
+            //     $arr_key = explode('-', $old_key);
+
+            //     if (strtolower($arr_key[0]) === 'col' && strtolower($arr_key[2]) === 'content') {
+            //         $new_key = $arr_key[1] . '2:' . $arr_key[1] . $row;
+            //         $styles[$new_key] = $value;
+            //         unset($styles[$old_key]);
+            //     }
+
+            // }
+
             $data[$key]['styles'] = [
                 $all_cell => [
                     'borders' => [
                         'allborders' => [
                             'style' => \PHPExcel_Style_Border::BORDER_THIN,
                         ],
+                    ],
+                    'alignment' => [
+                        'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
                     ],
                 ],
                 $header_cell => [
@@ -95,7 +109,7 @@ class Helpers extends \yii\base\Component
                     $sheet->setAutoSize(true);
                 }
             };
-            $styles = array_replace($data[$key]['styles'], $style);
+            $data[$key]['styles'] = array_replace($data[$key]['styles'], $styles);
         }
 
         $file = \Yii::createObject([
@@ -104,6 +118,7 @@ class Helpers extends \yii\base\Component
         ]);
 
         $file->send($filename);
+        exit();
     }
 
     /**
