@@ -2,13 +2,15 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered dataTable">
+<table class="table table-striped table-bordered dataTable table-pdf">
     <thead>
+        <tr>
         <th>No</th>
         <th>Nama Alternatif</th>
-        <?php foreach ($kriteria as $kri): ?>
-            <th><?= $kri->nama_kriteria . '<br>('  . Helpers::getTypeKriteria($kri->type) . ')' ?></th>
-        <?php endforeach; ?>
+            <?php foreach ($kriteria as $kri): ?>
+                <th><?= $kri->nama_kriteria . '<br>('  . Helpers::getTypeKriteria($kri->type) . ')' ?></th>
+            <?php endforeach; ?>
+        </tr>
     </thead>
     <tbody>
         <?php if (!empty($nilai) && is_array($nilai)): ?>

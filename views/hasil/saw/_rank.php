@@ -2,11 +2,13 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered dataTable">
+<table class="table table-striped table-bordered dataTable table-pdf">
     <thead>
-        <th>Peringkat</th>
-        <th>Nama Alternatif</th>
-        <th>Nilai</th>
+        <tr>
+            <th>Peringkat</th>
+            <th>Nama Alternatif</th>
+            <th>Nilai</th>
+        </tr>
     </thead>
     <tbody>
         <?php if (!empty($rank) && is_array($rank)): ?>

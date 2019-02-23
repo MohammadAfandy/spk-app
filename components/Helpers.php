@@ -9,11 +9,43 @@ use app\models\Kriteria;
 use app\models\Spk;
 use app\models\Penilaian;
 
+use kartik\mpdf\Pdf;
 /**
  * Class Helpers
  */
 class Helpers extends \yii\base\Component
 {
+
+    /**
+     * Generate View to PDF
+     * @param view content
+     * @param string dest
+     * @param string filename
+     * @param array options
+     * @return pdf
+     */
+    public static function generatePdf($content, $dest, $filename = false, $options = [])
+    {
+        $params = [
+            'filename' => $filename,
+            'mode' => Pdf::MODE_UTF8,
+            'format' => Pdf::FORMAT_A4, 
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => $dest,
+            'content' => $content,
+            'cssFile' => '@webroot/css/pdf.css',
+            'options' => ['title' => 'Sistem Pendukung Keputusan'],
+            'methods' => [ 
+                'SetHeader'=>['Sistem Pendukung Keputusan'], 
+                'SetFooter'=>['{PAGENO}'],
+            ]
+        ];
+
+        $params = array_merge($params, $options);
+        $pdf = new Pdf($params);
+        return $pdf->render();
+        exit();
+    }
 
     /**
      * Convert date to date format Indonesia

@@ -3,22 +3,26 @@ use app\components\Helpers;
 ?>
 <fieldset class="fieldset">
     <legend>Kriteria</legend>
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered table-pdf">
         <thead>
-            <th>No</th>
-            <th>Nama Kriteria</th>
-            <th>Tipe</th>
-            <th>Bobot</th>
+            <tr>
+                <th>No</th>
+                <th>Nama Kriteria</th>
+                <th>Tipe</th>
+                <th>Bobot</th>
+            </tr>
         </thead>
         <tbody>
             <?php if (!empty($kriteria) && is_array($kriteria)): ?>
+            <?php $no = 1; ?>
             <?php foreach($kriteria as $key => $kri): ?>
                 <tr>
-                    <td><?= $key + 1 ?></td>
+                    <td><?= $no ?></td>
                     <td><?= $kri['nama_kriteria'] ?></td>
                     <td><?= Helpers::getTypeKriteria($kri['type']) ?></td>
                     <td><?= $kri['bobot'] * 100 . ' %' ?></td>
                 </tr>
+            <?php $no++; ?>
             <?php endforeach; ?>
             <?php else: ?>
                 <tr>

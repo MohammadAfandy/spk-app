@@ -13,7 +13,6 @@ use app\models\Kriteria;
 use yii\web\NotFoundHttpException;
 
 use app\components\Helpers;
-use kartik\mpdf\Pdf;
 /**
  * HasilController 
  */
@@ -40,12 +39,13 @@ class HasilController extends Controller
 
     public function actionExportPdf($spk, $metode)
     {
-        if (empty($spk) || empty($metode)) {
+        if (empty($spk) || ($metode !== 'saw' && $metode !== 'wp')) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $result['spk'] = Yii::$app->request->get('spk');
         $result['metode'] = Yii::$app->request->get('metode');
+        $result['alternatif'] = \app\models\Alternatif::find()->where(['id_spk' => $spk])->asArray()->all();
 
         $result = array_merge($result, $this->getHasil($result['spk'], $result['metode']));
 
@@ -53,48 +53,21 @@ class HasilController extends Controller
         $result['rank'] = isset($result['hasil']['rank']) ? $result['hasil']['rank'] : null;
         $result['vektor_s'] = isset($result['hasil']['vektor_s']) ? $result['hasil']['vektor_s'] : null;
         $result['vektor_v'] = isset($result['hasil']['vektor_v']) ? $result['hasil']['vektor_v'] : null;
-        // get your HTML raw content without any layouts or scripts
-        $content = $this->renderPartial('pdf/index_pdf', $result);
 
-        // setup kartik\mpdf\Pdf component
-        $pdf = new Pdf([
-            // set to use core fonts only
-            'mode' => Pdf::MODE_CORE,
-            'filename' => strtolower('spk-' . str_replace(' ', '-', Helpers::getNamaSpkByIdSpk($spk)) . '-' . $metode . '-' . time() . '.pdf'),
-            // 'mode' => Pdf::MODE_UTF8,
-            // A4 paper format
-            'format' => Pdf::FORMAT_A4, 
-            // portrait orientation
-            'orientation' => Pdf::ORIENT_PORTRAIT, 
-            // stream to browser inline
-            // 'destination' => Pdf::DEST_BROWSER, 
-            'destination' => Pdf::DEST_BROWSER, 
-            // your html content input
-            'content' => $content,  
-            // format content from your own css file if needed or use the
-            // enhanced bootstrap css built by Krajee for mPDF formatting 
-            // 'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
-            'cssFile' => '@webroot/css/pdf.css',
-            // any css to be embedded if required
-            'cssInline' => '.kv-heading-1{font-size:18px}', 
-            // set mPDF properties on the fly
-            'options' => ['title' => 'Sistem Pendukung Keputusan'],
-            // call mPDF methods on the fly
-            'methods' => [ 
-                'SetHeader'=>['Sistem Pendukung Keputusan'], 
-                'SetFooter'=>['{PAGENO}'],
-            ]
-        ]);
+        $content = $this->renderPartial('pdf/pdf_hasil', $result);
+        $filename = strtolower('spk-' . str_replace(' ', '-', Helpers::getNamaSpkByIdSpk($spk)) . '-' . $metode . '-' . time() . '.pdf');
 
-        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-        Yii::$app->response->headers->add('Content-Type', 'application/pdf');
+        return Helpers::generatePdf($content, 'I', $filename);
+    }
 
-        // return the pdf output as per the destination setting
-        return $pdf->render(); 
+    public function actionExportExcel()
+    {
+        
     }
 
     public function getHasil($id_spk, $metode)
     {
+        $penilaian = $kriteria = $nilai = $hasil = $alt_terbaik = null;
         $penilaian = Penilaian::find()->alias('p')->where(['p.id_spk' => $id_spk])->joinWith(['alternatif'])->all();
         $kriteria = Kriteria::find()->indexBy('id')->where(['id_spk' => $id_spk])->all();
 
@@ -108,6 +81,7 @@ class HasilController extends Controller
             }
 
             $alt_terbaik = $this->getAlternatifTerbaik($hasil, $metode);
+        
         }
 
         return [

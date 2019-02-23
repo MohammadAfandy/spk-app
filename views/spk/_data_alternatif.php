@@ -1,10 +1,12 @@
 <fieldset class="fieldset">
     <legend>Alternatif</legend>
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered table-pdf">
         <thead>
-            <th>No</th>
-            <th>Nama Alternatif</th>
-            <th>Keterangan</th>
+            <tr>
+                <th>No</th>
+                <th>Nama Alternatif</th>
+                <th>Keterangan</th>
+            </tr>
         </thead>
         <tbody>
             <?php if (!empty($alternatif) && is_array($alternatif)): ?>

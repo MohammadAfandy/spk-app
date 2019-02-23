@@ -2,11 +2,13 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered dataTable">
+<table class="table table-striped table-bordered dataTable table-pdf">
     <thead>
-        <th>No</th>
-        <th>Nama Alternatif</th>
-        <th>Nilai</th>
+        <tr>
+            <th>No</th>
+            <th>Nama Alternatif</th>
+            <th>Nilai</th>
+        </tr>
     </thead>
     <tbody>
         <?php if (!empty($vektor_s) && is_array($vektor_s)): ?>

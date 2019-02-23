@@ -44,11 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </form>
 
     <?php if ($spk && $metode): ?>
-        <div class="col-lg-12" style="margin-top: 15px;">
-            <?= Html::a(' Excel', ['export-excel', 'spk' => $spk, 'metode' => $metode], ['class' => 'btn btn-success pull-right fa fa-file-excel-o', 'target' => 'blank']) ?>
-            <?= Html::a(' PDF', ['export-pdf', 'spk' => $spk, 'metode' => $metode], ['class' => 'btn btn-danger pull-right fa fa-file-pdf-o', 'target' => 'blank']) ?>
-        </div>
-        <div class="col-lg-12">
         <?php if (!$penilaian): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
                 <strong>Perhatian ! </strong>Data penilaian belum diisi untuk SPK ini, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]) ?>
@@ -62,8 +57,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 <strong>Perhatian ! </strong>Data penilaian yang diinput tidak sesuai dengan jumlah kriteria, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]) ?>
             </div>
         <?php else: ?>
-            <div class="alert alert-info" style="margin-top: 20px">
-                Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Helpers::getNamaSpkByIdSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= count($alt_terbaik) > 1 ? implode(' dan ', $alt_terbaik) : $alt_terbaik[0]; ?></strong>
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-lg-12">
+                    <fieldset class="fieldset">
+                        <legend>Export</legend>
+                        <?= Html::a(' PDF', ['export-pdf', 'spk' => $spk, 'metode' => $metode], ['class' => 'btn btn-danger fa fa-file-pdf-o', 'target' => 'blank']) ?> &nbsp;
+                        <?= Html::a(' Excel', ['export-excel', 'spk' => $spk, 'metode' => $metode], ['class' => 'btn btn-success fa fa-file-excel-o', 'target' => 'blank']) ?>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12"">
+                    <div class="alert alert-info" style="margin-top: 20px">
+                        Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Helpers::getNamaSpkByIdSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= count($alt_terbaik) > 1 ? implode(' dan ', $alt_terbaik) : $alt_terbaik[0]; ?></strong>
+                    </div>
+                </div>
             </div>
             <div class="panel-body" style="margin-top: 30px;">
                 <?php
@@ -116,7 +124,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]);
                 ?>
             </div>
-        </div>
         <?php endif; ?>
     <?php endif; ?>
 </div>

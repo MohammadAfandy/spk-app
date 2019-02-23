@@ -2,13 +2,15 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered dataTable">
+<table class="table table-striped table-bordered dataTable table-pdf">
     <thead>
-        <th>No</th>
-        <th>Nama Alternatif</th>
-        <?php foreach ($kriteria as $kri): ?>
-            <th><?= $kri->nama_kriteria . '<br>('  . (($kri->type == 0) ? 'COST' : 'BENEFIT') . ' )' ?></th>
-        <?php endforeach; ?>
+        <tr>
+            <th>No</th>
+            <th>Nama Alternatif</th>
+            <?php foreach ($kriteria as $kri): ?>
+                <th><?= $kri->nama_kriteria . '<br>('  . (($kri->type == 0) ? 'COST' : 'BENEFIT') . ' )' ?></th>
+            <?php endforeach; ?>
+        </tr>
     </thead>
     <tbody>
         <?php if (!empty($normalisasi) && is_array($normalisasi)): ?>

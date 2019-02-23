@@ -100,11 +100,11 @@ class KriteriaController extends Controller
     {
         $model = $this->findModel($id);
         $id_spk = $model->id_spk;
-        $id_kriteria = $model->id;
+
 
         if ($model->delete()) {
             $this->resetBobot($id_spk);
-            $this->deletePenilaian($model->id);
+            $this->deletePenilaian($model->id, $model->id_spk);
         }
 
         return $this->redirect(['index', 'id' => $id_spk]);
@@ -205,28 +205,35 @@ class KriteriaController extends Controller
         return false;
     }
 
-    public function deletePenilaian($id_kriteria)
+    public function deletePenilaian($id_kriteria, $id_spk)
     {
-        $penilaian = Penilaian::find()->all();
+        $penilaian = Penilaian::find()->where(['id_spk' => $id_spk])->all();
 
-        if (!empty($model)) {
-            foreach ($penilaian as $key => $pen) {
+        if (!empty($penilaian)) {
 
-                if (!empty($pen->penilaian)) {
-                    $nilai = json_decode($pen->penilaian, true);
+            if (Kriteria::find()->where(['id_spk' => $id_spk])->all()) {
+                foreach ($penilaian as $key => $pen) {
 
-                    if (array_key_exists($id_kriteria, $nilai)) {
-                        unset($nilai[$id_kriteria]);
-                        $model = Penilaian::findOne($pen->id);
-                        $model->penilaian = json_encode($nilai);
-                        $model->save();
+                    if (!empty($pen->penilaian)) {
+                        $nilai = json_decode($pen->penilaian, true);
+
+                        if (array_key_exists($id_kriteria, $nilai)) {
+                            unset($nilai[$id_kriteria]);
+                            $pen->penilaian = json_encode($nilai);
+                            $pen->save();
+                        }
                     }
+
                 }
-
+                return true;
+            } else {
+                foreach ($penilaian as $key => $pen) {
+                    $pen->delete();
+                }
+                return true;
             }
-            return true;
         }
-
+        
         return false;
     }
 }

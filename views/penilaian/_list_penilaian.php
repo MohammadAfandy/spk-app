@@ -24,7 +24,8 @@ use app\components\Helpers;
                     <td>
                         <?php
                         echo (isset($nilai[$pen->id][$kri->id])) 
-                        ? Helpers::nilaiToCrips($nilai[$pen->id][$kri->id], $kri->id) : '-';
+                        ? Helpers::nilaiToCrips($nilai[$pen->id][$kri->id], $kri->id)
+                        : '-';
                         ?>
                     </td>
                 <?php endforeach; ?>
