@@ -32,7 +32,7 @@ use dmstr\widgets\Alert;
     <div class="pull-right hidden-xs">
         Template Design By <a href="http://almsaeedstudio.com">Almsaeed Studio</a>. All rights reserved. <b>Version</b> 2.0 
     </div>
-    <strong>Copyright &copy; Mohammad Afandy <?= date('Y') ?></strong>
+    Copyright &copy; <strong>Mohammad Afandy</strong> <?= date('Y') ?>
 </footer>
 
 <!-- Control Sidebar -->

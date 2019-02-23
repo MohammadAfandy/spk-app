@@ -1,0 +1,45 @@
+.title {
+    text-align: center;
+}
+
+.fieldset {
+    padding: .35em .625em .75em;
+    margin: 20px 0;
+    border: 1px solid #c0c0c0;
+    border-radius: 10px;
+}
+.fieldset legend {
+    padding: 2px 1em;
+    min-height: 1.4em;
+    margin-bottom: 20px;
+    font-size: 18px;
+    line-height: inherit;
+    color: #333;
+    border: 1px solid #c0c0c0;
+    background-color: rgba(167, 26, 26, 0);
+    border-radius: 1em;
+}
+
+.table-pdf {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-pdf th, .table-pdf td {
+    border: 1px solid;
+}
+
+.table-pdf th {
+    padding: 5px;
+    text-align: center;
+    background-color: #ddd;
+}
+
+.table-pdf td {
+    padding: 5px;
+    text-align: center;
+}
+
+.table-pdf td:nth-child(2) {
+    text-align: left;
+}

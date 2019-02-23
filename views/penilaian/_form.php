@@ -68,19 +68,21 @@ use app\components\Helpers;
                     </div>
                 </div>
             <?php endforeach; ?>
-        <?php elseif (empty($kriteria)): ?>
-            <h4 style="color:red">Data Kriteria Untuk SPK <?= Helpers::getNamaSpkByIdSpk($model->isNewRecord ? $id : $model->id_spk) ?> Belum Ada</h4>
-        <?php else: ?>
+        <?php elseif (empty($alternatif)): ?>
             <h4 style="color:red">Data Alternatif Untuk SPK <?= Helpers::getNamaSpkByIdSpk($id) ?> Tidak Ada Atau Sudah Digunakan Semua</h4>
+        <?php else: ?>
+            <h4 style="color:red">Data Kriteria Untuk SPK <?= Helpers::getNamaSpkByIdSpk($model->isNewRecord ? $id : $model->id_spk) ?> Belum Ada</h4>
         <?php endif; ?>
 
         <div class="form-group">
             <div class="col-sm-5 pull-right">
                 <?= Html::a('Kembali', ($model->isNewRecord) ? ['index', 'id' => $id] : ['index', 'id' => $model->id_spk], ['class' => 'btn btn-danger']) ?>
-                <?php if (($model->isNewRecord && $alternatif) || !$model->isNewRecord): ?>
+                <?php if (($model->isNewRecord && $alternatif && $kriteria) || !$model->isNewRecord): ?>
                     <?= Html::submitButton(($model->isNewRecord) ? 'Tambah' : 'Update', ['class' => 'btn btn-success',]); ?>
-                <?php else: ?>
+                <?php elseif ($model->isNewRecord && empty($alternatif)): ?>
                     <?= Html::a('Tambah Data Alternatif', ['alternatif/create', 'id' => $id], ['class' => 'btn btn-info']) ?>
+                <?php elseif ($model->isNewRecord && empty($kriteria)): ?>
+                    <?= Html::a('Tambah Data Kriteria', ['kriteria/index', 'id' => $id], ['class' => 'btn btn-info']) ?>
                 <?php endif; ?>
             </div>
         </div>

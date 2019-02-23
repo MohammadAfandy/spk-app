@@ -38,12 +38,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::dropDownList('metode', $metode, ['saw' => 'SAW (Simple Additive Weighting)', 'wp' => 'WP (Weighted Product)'], ['prompt' => '--PILIH METODE--', 'class' => 'form-control', 'id' => 'pilih_metode']) ?>
             </div>
             <div class="col-lg-3">
-                <?= Html::submitButton('Proses', ['class' => 'btn btn-success btn-block']) ?>
+                <?= Html::submitButton('Proses', ['class' => 'btn btn-primary btn-block', 'id' => 'btn_proses']) ?>
             </div>
         </div>
     </form>
 
     <?php if ($spk && $metode): ?>
+        <div class="col-lg-12" style="margin-top: 15px;">
+            <?= Html::a(' Excel', ['export-excel', 'spk' => $spk, 'metode' => $metode], ['class' => 'btn btn-success pull-right fa fa-file-excel-o', 'target' => 'blank']) ?>
+            <?= Html::a(' PDF', ['export-pdf', 'spk' => $spk, 'metode' => $metode], ['class' => 'btn btn-danger pull-right fa fa-file-pdf-o', 'target' => 'blank']) ?>
+        </div>
+        <div class="col-lg-12">
         <?php if (!$penilaian): ?>
             <div class="alert alert-danger" style="margin-top: 20px">
                 <strong>Perhatian ! </strong>Data penilaian belum diisi untuk SPK ini, harap cek <?= Html::a('Data Penilaian', ['penilaian/index', 'id' => $spk]) ?>
@@ -111,6 +116,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]);
                 ?>
             </div>
+        </div>
         <?php endif; ?>
     <?php endif; ?>
 </div>
+
+
+<?php
+$this->registerJs(
+    '
+    $("#btn_proses").on("click", function() {
+        if (!$("#pilih_spk").val() || !$("#pilih_metode").val()) {
+            alert("SPK dan Metode Tidak Boleh Kosong");
+            return false;
+        }
+    });
+    ',
+    yii\web\View::POS_READY,
+    'hasil-js'
+);
+?>

@@ -13,14 +13,14 @@ use mdm\admin\components\Helper;
         <!-- /.search form -->
         <?php
         $menuItems = [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'SPK', 'url' => ['/spk/index']],
-            ['label' => 'Alternatif', 'url' => ['/alternatif/index']],
-            ['label' => 'Kriteria', 'url' => ['/kriteria/index']],
-            ['label' => 'Penilaian', 'url' => ['/penilaian/index']],
-            ['label' => 'Hasil', 'url' => ['/hasil/index']],
-            ['label' => 'User Management', 'url' => ['/admin/assignment/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
+            ['label' => 'Home', 'url' => ['/site/index'], 'icon' => 'home'],
+            ['label' => 'SPK', 'url' => ['/spk/index'], 'icon' => 'database'],
+            ['label' => 'Alternatif', 'url' => ['/alternatif/index'], 'icon' => 'user'],
+            ['label' => 'Kriteria', 'url' => ['/kriteria/index'], 'icon' => 'random'],
+            ['label' => 'Penilaian', 'url' => ['/penilaian/index'], 'icon' => 'bar-chart'],
+            ['label' => 'Hasil', 'url' => ['/hasil/index'], 'icon' => 'pie-chart'],
+            ['label' => 'User Management', 'url' => ['/admin/assignment/index'], 'icon' => 'users '],
+            ['label' => 'About', 'url' => ['/site/about'], 'icon' => 'info'],
         ];
 
         $menuItems = Helper::filter($menuItems);
