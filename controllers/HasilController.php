@@ -3,13 +3,13 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Spk;
+use app\models\Alternatif;
+use app\models\Kriteria;
 use app\models\Penilaian;
-use app\models\PenilaianSearch;
 use yii\web\Controller;
 
 use yii\helpers\ArrayHelper;
-use app\models\Spk;
-use app\models\Kriteria;
 use yii\web\NotFoundHttpException;
 
 use app\components\Helpers;
@@ -60,9 +60,90 @@ class HasilController extends Controller
         return Helpers::generatePdf($content, 'I', $filename);
     }
 
-    public function actionExportExcel()
+    public function actionExportExcel($spk, $metode)
     {
-        
+        $penilaian = $normalisasi = $rank = $vektor_s = $vektor_v = [];
+
+        $result = $this->getHasil($spk, $metode);
+        $arr_rank = $metode === 'saw' ? array_keys($result['hasil']['rank']) : array_keys($result['hasil']['vektor_v']);
+        $titles = ['No', 'Nama Alternatif'];
+
+        foreach ($result['kriteria'] as $kriteria) {
+            $titles[] = $kriteria->nama_kriteria . ' (' . Helpers::getTypeKriteria($kriteria->type) . ')';
+        }
+
+        $i = 0;
+        foreach ($result['nilai'] as $id_pen => $nilai) {
+            $j = 2;
+            $key = array_search($id_pen, $arr_rank);
+            $penilaian[$i][] = $i + 1;
+            $penilaian[$i][] = Helpers::getNamaAlternatifByIdPenilaian($id_pen);
+
+            if ($metode === 'saw') {
+                $normalisasi[$i][] =  $i + 1;
+                $rank[$key][] = $key + 1;
+                $normalisasi[$i][] = $rank[$key][] = Helpers::getNamaAlternatifByIdPenilaian($id_pen);
+                $rank[$key][] = round($result['hasil']['rank'][$id_pen], 3);
+            } else {
+                $vektor_s[$i][] = $i + 1;
+                $vektor_v[$key][] = $key + 1;
+                $vektor_s[$i][] = $vektor_v[$key][] = Helpers::getNamaAlternatifByIdPenilaian($id_pen);
+                $vektor_s[$i][] = round($result['hasil']['vektor_s'][$id_pen], 3);
+                $vektor_v[$key][] = round($result['hasil']['vektor_v'][$id_pen], 3);
+            }
+
+            foreach ($nilai as $id_kri => $kri) {
+                $penilaian[$i][$j] = Helpers::nilaiToCrips($kri, $id_kri);
+                if ($metode === 'saw') {
+                    $normalisasi[$i][$j] = round($result['hasil']['normalisasi'][$id_pen][$id_kri], 3);
+                }
+                $j++;
+            }
+
+            $i++;
+        }
+
+        ksort($rank);
+        ksort($vektor_v);
+
+        $filename = strtolower('spk-' . str_replace(' ', '-', Helpers::getNamaSpkByIdSpk($spk)) . '-' . $metode . '-' . time() . '.xlsx');
+
+        $data_excel = [
+            'Alternatif' => [
+                'data' => Yii::$app->db->createCommand(
+                    "SELECT (@position := @position + 1) AS `no`, `nama_alternatif`, `keterangan`
+                    FROM `tbl_alternatif`
+                    CROSS JOIN (SELECT @position := 0) `p`
+                    WHERE `id_spk` = '$spk';"
+                )->queryAll(),
+                'titles' => ['No', 'Nama Alternatif', 'Keterangan'],
+            ],
+            'Kriteria' => [
+                'data' => Yii::$app->db->createCommand(
+                    "SELECT (@position := @position + 1) AS `no`, `nama_kriteria`,
+                    IF(`type` = 0, 'COST', 'BENEFIT') AS `type`,
+                    CONCAT(`bobot` * 100, ' %') AS `bobot`
+                    FROM `tbl_kriteria`
+                    CROSS JOIN (SELECT @position := 0) `p`
+                    WHERE `id_spk` = '$spk';"
+                )->queryAll(),
+                'titles' => ['No', 'Nama Kriteria', 'Type', 'Bobot'],
+            ],
+            'Penilaian' => [
+                'data' => $penilaian,
+                'titles' => $titles,
+            ],
+            ($metode === 'saw') ? 'Normalisasi' : 'Vektor S' => [
+                'data' => ($metode === 'saw') ? $normalisasi : $vektor_s,
+                'titles' => ($metode === 'saw') ? $titles : ['No', 'Nama Alternatif', 'Vektor S'],
+            ],
+            ($metode === 'saw') ? 'Rank' : 'Vektor V' => [
+                'data' => ($metode === 'saw') ? $rank : $vektor_v,
+                'titles' => ['No', 'Nama Alternatif', ($metode === 'saw') ? 'Rank' : 'Vektor V'],
+            ],
+        ];
+
+        return Helpers::generateExcel($filename, $data_excel);
     }
 
     public function getHasil($id_spk, $metode)

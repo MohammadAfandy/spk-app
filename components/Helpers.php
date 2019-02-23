@@ -41,10 +41,69 @@ class Helpers extends \yii\base\Component
             ]
         ];
 
-        $params = array_merge($params, $options);
+        $params = array_replace($params, $options);
         $pdf = new Pdf($params);
         return $pdf->render();
         exit();
+    }
+
+    /**
+     * Generate Excel
+     * @param string filename
+     * @param array data
+     * @param array style
+     * @return excel
+     */
+    public static function generateExcel($filename, $data = [], $style = [])
+    {
+        // var_dump(count($data['Penilaian']['titles']));die();
+        foreach ($data as $key => $dat) {
+            $column = count($data[$key]['titles']);
+            $row = count($data[$key]['data']) + 1;
+            $all_cell = 'A1:' . chr($column + 64) . $row;
+            $header_cell = 'A1:' . chr($column + 64) . '1';
+            $content_cell = 'A2:' . chr($column + 64) . $row;
+            $data[$key]['styles'] = [
+                $all_cell => [
+                    'borders' => [
+                        'allborders' => [
+                            'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                        ],
+                    ],
+                ],
+                $header_cell => [
+                    'fill' => [
+                        'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+                        'startcolor' => [
+                            'argb' => 'd3d3d3',
+                        ],
+                    ],
+                    'font' => [
+                        'bold' => true,
+                        'size' => 12,
+                    ],
+                ],
+                $content_cell => [
+                    'font' => [
+                        'size' => 11,
+                    ],
+                ],
+            ];
+            $data[$key]['on beforeRender'] = function ($event) use ($column) {
+                for ($i = 65; $i < ($column + 65); $i++) {
+                    $sheet = $event->sender->getSheet()->getColumnDimension(chr($i));
+                    $sheet->setAutoSize(true);
+                }
+            };
+            $styles = array_replace($data[$key]['styles'], $style);
+        }
+
+        $file = \Yii::createObject([
+            'class' => 'codemix\excelexport\ExcelFile',
+            'sheets' => $data,
+        ]);
+
+        $file->send($filename);
     }
 
     /**
