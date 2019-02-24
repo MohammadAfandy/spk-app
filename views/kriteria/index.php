@@ -41,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
             <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
+            <?= Html::hiddenInput('jenis_bobot', Helpers::getJenisBobot($id), ['id' => 'jenis_bobot']) ?>
             <div style="color: red; min-height: 20px;">
                 <strong><span id="error_bobot"></span></strong>
             </div>
@@ -134,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                     ],
                     [
-                        'header' => 'Bobot' . '<span class="pull-right">' . 
+                        'header' => '<span>Bobot (' . (Helpers::getJenisBobot($id) === 0 ? 'Preferensi' : 'Persen') . ')</span>' . '<span class="pull-right">' . 
                         '<i class="fa fa-edit fa-lg" id="btn_edit_all_bobot" title="Edit All Bobot"></i>' . ' ' .
                         '<i class="fa fa-close fa-lg" id="btn_cancel_all_bobot" title="Cancel All Bobot"></i>'
                             // Html::button('Edit All', [
@@ -147,15 +148,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             // ])
                         ,
                         'attribute' => 'bobot',
-                        'value' => function($model) use (&$tabindex) {
-                            $bobot = Html::textInput('Kriteria[' .$model->id. '][bobot]', $model->bobot * 100, [
-                                'type' => 'number',
-                                'class' => 'bobot_kriteria',
-                                'disabled' => 'disabled',
-                                'tabindex' => $tabindex,
-                                'data-id' => $model->id,
-                                'data-oldval' => $model->bobot * 100,
-                            ]);
+                        'value' => function($model) use ($id, &$tabindex) {
+                            $bobot = Html::textInput(
+                                'Kriteria[' .$model->id. '][bobot]',
+                                Helpers::getJenisBobot($id) === \app\models\Spk::BOBOT_PERSEN
+                                ? $model->bobot * 100
+                                : $model->bobot,
+                                [
+                                    'type' => 'number',
+                                    'class' => 'bobot_kriteria',
+                                    'disabled' => 'disabled',
+                                    'tabindex' => $tabindex,
+                                    'data-id' => $model->id,
+                                    'data-oldval' => $model->bobot * 100,
+                                ]
+                            );
                             $edit = '<i class="fa fa-edit btn_edit_bobot" data-id="' .$model->id. '" title="Edit Bobot"></i>';
                             $cancel = '<i class="fa fa-close btn_cancel_bobot" data-id="' .$model->id. '" title="Cancel Bobot"></i>';
                             // $edit = Html::button('Edit', [
@@ -167,7 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             //     'data-id' => $model->id,
                             // ]);
                             $tabindex++;
-                            return $bobot . ' %<span class="pull-right">' . $edit . ' '. $cancel;
+                            return $bobot . '<span class="pull-right">' . $edit . ' '. $cancel;
                         },
                         'format' => 'raw',
                     ],
@@ -206,6 +213,25 @@ $this->registerJs(
         showLoading();
         window.location.href = "' .Url::to(['index']). '/" + this.value;
     });
+
+    // if ($("#jenis_bobot").val() == "1") {
+    //     $(".pilih-bobot").find(".text-bobot").text("Bobot Persen")
+    //     $(".pilih-bobot").attr("title", "Ganti ke Bobot Preferensi");
+    // }
+
+    // $(".pilih-bobot").on("click", function() {
+    //     if ($(this).find(".text-bobot").text() == "Bobot Preferensi") {
+    //         $(this).find(".text-bobot").text("Bobot Persen");
+    //         $(this).attr("title", "Ganti ke Bobot Preferensi");
+
+    //         $("#jenis_bobot").val("1");
+    //     } else {
+    //         $(this).find(".text-bobot").text("Bobot Preferensi");
+    //         $(this).attr("title", "Ganti ke Bobot Persen");
+
+    //         $("#jenis_bobot").val("0");
+    //     }
+    // });
 
     $(document).on("click", ".btn_edit_nama", function() {
         let id = $(this).data("id");
@@ -300,7 +326,7 @@ $this->registerJs(
             $("#error_bobot").empty();
         }
     });
-
+    
     $(document).on("focus", ".bobot_kriteria", function() {
         let total = 0;
         $(".bobot_kriteria").each(function() {
@@ -320,23 +346,23 @@ $this->registerJs(
 
     $("#btn_set").on("click", function() {
         let total = 0;
-        let cek_nama = cek_type = cek_bobot = true; //kondisi ga bisa submit
+        let cek_nama = cek_type = cek_bobot = true;
 
         $(".nama_kriteria").each(function() {
             if (!$(this).is(":disabled")) {
-                cek_nama = false; // kondisi normal
+                cek_nama = false;
             }
         });
 
         $(".type_kriteria").each(function() {
             if (!$(this).is(":disabled")) {
-                cek_type = false; // kondisi normal
+                cek_type = false;
             }
         });
 
         $(".bobot_kriteria").each(function() {
             if (!$(this).is(":disabled")) {
-                cek_bobot = false; // kondisi bisa submit
+                cek_bobot = false;
             }
             total += parseInt(this.value);
         });
@@ -345,6 +371,8 @@ $this->registerJs(
             $("#error_bobot").html("Tidak Ada Data yang Diedit");
             return false;
         } else if ((cek_nama == false || cek_type == false) && cek_bobot == true) {
+            return true;
+        } else if ($("#jenis_bobot").val() === "0") {
             return true;
         } else {
             if (total == 100) {

@@ -18,6 +18,9 @@ use yii\db\Expression;
  */
 class Spk extends \yii\db\ActiveRecord
 {
+    const BOBOT_PREFERENSI = 0;
+    const BOBOT_PERSEN = 1;
+
     /**
      * {@inheritdoc}
      */

@@ -31,7 +31,8 @@ class HasilController extends Controller
         $result['data_spk'] = Spk::find()->indexBy('id')->all();
 
         if ($result['spk'] && $result['metode']) {
-            $result = array_merge($result, $this->getHasil($result['spk'], $result['metode']));
+            // $result = array_merge($result, $this->getHasil($result['spk'], $result['metode']));
+            $result = $result + $this->getHasil($result['spk'], $result['metode']);
         }
 
         return $this->render('index', $result);
@@ -45,9 +46,10 @@ class HasilController extends Controller
 
         $result['spk'] = Yii::$app->request->get('spk');
         $result['metode'] = Yii::$app->request->get('metode');
-        $result['alternatif'] = \app\models\Alternatif::find()->where(['id_spk' => $spk])->asArray()->all();
+        $result['alternatif'] = Alternatif::find()->where(['id_spk' => $spk])->asArray()->all();
 
-        $result = array_merge($result, $this->getHasil($result['spk'], $result['metode']));
+        // $result = array_merge($result, $this->getHasil($result['spk'], $result['metode']));
+        $result = $result + $this->getHasil($result['spk'], $result['metode']);
 
         $result['normalisasi'] = isset($result['hasil']['normalisasi']) ? $result['hasil']['normalisasi'] : null;
         $result['rank'] = isset($result['hasil']['rank']) ? $result['hasil']['rank'] : null;
@@ -62,6 +64,10 @@ class HasilController extends Controller
 
     public function actionExportExcel($spk, $metode)
     {
+        if (empty($spk) || ($metode !== 'saw' && $metode !== 'wp')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $penilaian = $normalisasi = $rank = $vektor_s = $vektor_v = [];
 
         $result = $this->getHasil($spk, $metode);
@@ -159,14 +165,15 @@ class HasilController extends Controller
         $penilaian = $kriteria = $nilai = $hasil = $alt_terbaik = null;
         $penilaian = Penilaian::find()->alias('p')->where(['p.id_spk' => $id_spk])->joinWith(['alternatif'])->all();
         $kriteria = Kriteria::find()->indexBy('id')->where(['id_spk' => $id_spk])->all();
+        $jenis_bobot = Helpers::getJenisBobot($id_spk);
 
-        if ($penilaian) {
+        if ($penilaian && !Helpers::cekBobotKosong($id_spk)) {
             $nilai = $this->getNilai($penilaian);
 
             if ($metode === 'saw') {
-                $hasil = $this->generateSaw($nilai, $kriteria);
+                $hasil = $this->generateSaw($nilai, $kriteria,  $jenis_bobot);
             } else if ($metode === 'wp') {
-                $hasil = $this->generateWp($nilai, $kriteria);
+                $hasil = $this->generateWp($nilai, $kriteria, $jenis_bobot);
             }
 
             $alt_terbaik = $this->getAlternatifTerbaik($hasil, $metode);
@@ -193,10 +200,10 @@ class HasilController extends Controller
         return $nilai;
     }
 
-    public function generateSaw($nilai, $kriteria)
+    public function generateSaw($nilai, $kriteria, $jenis_bobot)
     {
         $normalisasi = $this->getNormalisasi($nilai, $kriteria);
-        $rank = $this->getRank($normalisasi, $kriteria);
+        $rank = $this->getRank($normalisasi, $kriteria, $jenis_bobot);
 
         return [
             'normalisasi' => $normalisasi,
@@ -204,9 +211,9 @@ class HasilController extends Controller
         ];
     }
 
-    public function generateWp($nilai, $kriteria)
+    public function generateWp($nilai, $kriteria, $jenis_bobot)
     {
-        $vektor_s = $this->getVektorS($nilai, $kriteria);
+        $vektor_s = $this->getVektorS($nilai, $kriteria, $jenis_bobot);
         $vektor_v = $this->getVektorV($vektor_s);
 
         return [
@@ -239,15 +246,32 @@ class HasilController extends Controller
         return $normalisasi;
     }
 
-    public function getRank($normalisasi, $kriteria)
+    public function getRank($normalisasi, $kriteria, $jenis_bobot)
     {
         $rank = [];
 
-        foreach ($normalisasi as $key => $norm) {
-            foreach ($norm as $k => $n) {
-                $rank[$key][] = $n * $kriteria[$k]->bobot;
+        if ($jenis_bobot === Spk::BOBOT_PREFERENSI) {
+
+            $arr_bobot = [];
+            foreach ($kriteria as $k) {
+                $arr_bobot[] = $k->bobot;
             }
-            $rank[$key] = array_sum($rank[$key]);
+            $sum_bobot = array_sum($arr_bobot);
+
+            foreach ($normalisasi as $key => $norm) {
+                foreach ($norm as $k => $n) {
+                    $bobot = $kriteria[$k]->bobot / $sum_bobot;
+                    $rank[$key][] = $n * $bobot;
+                }
+                $rank[$key] = array_sum($rank[$key]);
+            }
+        } else if ($jenis_bobot === Spk::BOBOT_PERSEN) {
+            foreach ($normalisasi as $key => $norm) {
+                foreach ($norm as $k => $n) {
+                    $rank[$key][] = $n * $kriteria[$k]->bobot;
+                }
+                $rank[$key] = array_sum($rank[$key]);
+            }
         }
 
         arsort($rank);
@@ -255,15 +279,32 @@ class HasilController extends Controller
         return $rank;
     }
 
-    public function getVektorS($nilai, $kriteria)
+    public function getVektorS($nilai, $kriteria, $jenis_bobot)
     {
         $vektor_s = [];
 
-        foreach ($nilai as $key => $nil) {
-            foreach ($nil as $k => $n) {
-                $vektor_s[$key][$k] = ($kriteria[$k]->type == Kriteria::COST) ? pow($n, -($kriteria[$k]->bobot)) : pow($n, $kriteria[$k]->bobot);  
+        if ($jenis_bobot === Spk::BOBOT_PREFERENSI) {
+
+            $arr_bobot = [];
+            foreach ($kriteria as $k) {
+                $arr_bobot[] = $k->bobot;
             }
-            $vektor_s[$key] = array_product($vektor_s[$key]);
+            $sum_bobot = array_sum($arr_bobot);
+
+            foreach ($nilai as $key => $nil) {
+                foreach ($nil as $k => $n) {
+                    $bobot = $kriteria[$k]->bobot / $sum_bobot;
+                    $vektor_s[$key][$k] = ($kriteria[$k]->type == Kriteria::COST) ? pow($n, -($bobot)) : pow($n, $bobot);  
+                }
+                $vektor_s[$key] = array_product($vektor_s[$key]);
+            }
+        } else if ($jenis_bobot === Spk::BOBOT_PERSEN) {
+            foreach ($nilai as $key => $nil) {
+                foreach ($nil as $k => $n) {
+                    $vektor_s[$key][$k] = ($kriteria[$k]->type == Kriteria::COST) ? pow($n, -($kriteria[$k]->bobot)) : pow($n, $kriteria[$k]->bobot);  
+                }
+                $vektor_s[$key] = array_product($vektor_s[$key]);
+            }
         }
 
         return $vektor_s;

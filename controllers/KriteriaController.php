@@ -168,12 +168,12 @@ class KriteriaController extends Controller
         $post_data = Yii::$app->request->post();
 
         if (!empty($post_data['Kriteria'])) {
-            
+
             foreach ($post_data['Kriteria'] as $key => $post) {
                 $model = $this->findModel($key);
                 $model->attributes = $post;
 
-                if (!empty($post['bobot'])) {
+                if ($post_data['jenis_bobot'] == SPK::BOBOT_PERSEN) {
                     $model->bobot = $post['bobot'] / 100;
                 }
             

@@ -310,4 +310,16 @@ class Helpers extends \yii\base\Component
         return !empty($crips) ? array_flip($crips) : null;
     }
 
+    /**
+     * get jenis bobot berdasarkan id spk
+     * @param int id_spk
+     * @return int jenis_bobot
+     */
+    public static function getJenisBobot($id_spk)
+    {
+        $spk = Spk::findOne($id_spk);
+        
+        return !empty($spk) ? $spk->jenis_bobot : null;
+    }
+
 }

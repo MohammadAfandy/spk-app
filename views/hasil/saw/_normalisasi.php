@@ -8,7 +8,7 @@ use app\components\Helpers;
             <th>No</th>
             <th>Nama Alternatif</th>
             <?php foreach ($kriteria as $kri): ?>
-                <th><?= $kri->nama_kriteria . '<br>('  . (($kri->type == 0) ? 'COST' : 'BENEFIT') . ' )' ?></th>
+                <th><?= $kri->nama_kriteria . '<br>('  . (($kri->type == 0) ? 'COST' : 'BENEFIT') . ')' ?></th>
             <?php endforeach; ?>
         </tr>
     </thead>
