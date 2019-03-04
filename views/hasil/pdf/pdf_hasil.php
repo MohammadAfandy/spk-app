@@ -3,8 +3,9 @@ use app\components\Helpers;
 use yii\base\View;
 ?>
 <h3 class="title">
-    SISTEM PENDUKUNG KEPUTUSAN <?= strtoupper(Helpers::getNamaSpkByIdSpk($spk)) ?><br>
-    METODE <?= strtoupper($metode) ?>
+    SISTEM PENDUKUNG KEPUTUSAN <br>
+    <?= strtoupper(Helpers::getNamaSpkByIdSpk($spk)) ?><br>
+    MENGGUNAKAN METODE <?= strtoupper($metode) ?>
 </h3>
 
 <?php 
