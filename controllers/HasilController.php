@@ -251,7 +251,6 @@ class HasilController extends Controller
         $rank = [];
 
         if ($jenis_bobot === Spk::BOBOT_PREFERENSI) {
-
             $arr_bobot = [];
             foreach ($kriteria as $k) {
                 $arr_bobot[] = $k->bobot;

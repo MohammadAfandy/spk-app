@@ -173,7 +173,7 @@ class KriteriaController extends Controller
                 $model = $this->findModel($key);
                 $model->attributes = $post;
 
-                if ($post_data['jenis_bobot'] == SPK::BOBOT_PERSEN) {
+                if (!empty($post['bobot']) && $post_data['jenis_bobot'] == SPK::BOBOT_PERSEN) {
                     $model->bobot = $post['bobot'] / 100;
                 }
             
@@ -227,7 +227,7 @@ class KriteriaController extends Controller
                 }
                 return true;
             } else {
-                foreach ($penilaian as $key => $pen) {
+                foreach ($penilaian as $pen) {
                     $pen->delete();
                 }
                 return true;
