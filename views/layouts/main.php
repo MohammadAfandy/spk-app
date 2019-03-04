@@ -58,16 +58,20 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
             $(this).find(":submit").attr("disabled", true).html("<span class=\'fa fa-spin fa-spinner\'></span>Proses");
         });
 
-        // $(".dataTable thead th").each(function () {
-        //     var title = $(".dataTable tfoot th").eq($(this).index()).text();
-        //     $(this).append("<br><input type=\'text\' placeholder=\'Search \'+title+\' class=\'search-table\' />");
-        // });
+        var data_table = $(".dataTable").dataTable({
+            "pageLength": 20,
+            "bLengthChange": false
+        });
 
-        $(".dataTable").DataTable();
+        // $(".dataTable thead tr").clone(true).appendTo(".dataTable thead");
+        // $(".dataTable thead tr:eq(1) th").each(function (i) {
+        //     var title = $(this).text();
+        //     $(this).html("<input type="text" placeholder="Search "+title+"" />");
 
-        // table.columns().eq(0).each(function(colIdx) {
-        //     $("input", table.column(colIdx).header()).on("keyup change", function() {
-        //         table.column(colIdx).search(this.value).draw();
+        //     $("input", this ).on("keyup change", function () {
+        //         if (data_table.column(i).search() !== this.value) {
+        //             data_table.column(i).search(this.value).draw();
+        //         }
         //     });
         // });
 

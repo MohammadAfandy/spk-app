@@ -178,6 +178,22 @@ class Helpers extends \yii\base\Component
     }
 
     /**
+     * Get jenis bobot berdasarkan id spk
+     * @param int id spk
+     * @return string nama spk
+     */
+    public static function getJenisBobotByIdSpk($id_spk)
+    {
+        $spk = Spk::findOne($id_spk);
+
+        if (!empty($spk)) {
+            return $spk->jenis_bobot;
+        }
+
+        return null;
+    }
+
+    /**
      * Get nama alternatif berdasarkan id alternatif
      * @param int id
      * @return string nama alternatif

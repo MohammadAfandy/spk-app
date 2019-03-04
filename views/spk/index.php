@@ -29,12 +29,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'nama_spk',
             'keterangan:ntext',
             [
-                'attribute' => 'created_date',
+                'attribute' => 'jenis_bobot',
+                'filter' => ['0' => 'Bobot Preferensi', '1' => 'Bobot Persen'],
                 'value' => function($model) {
-                    return Helpers::dateTimeIndonesia($model->created_date);
+                    return ($model->jenis_bobot == '0') ? 'Bobot Preferensi' : 'Bobot Persen';
                 }
             ],
-
+            // [
+            //     'attribute' => 'created_date',
+            //     'value' => function($model) {
+            //         return Helpers::dateTimeIndonesia($model->created_date);
+            //     }
+            // ],
             [
                 'class' => 'app\components\ActionColumn',
                 'header' => 'Aksi',

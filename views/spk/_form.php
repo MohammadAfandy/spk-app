@@ -21,6 +21,8 @@ use yii\bootstrap\ActiveForm;
 
         <?= $form->field($model, 'nama_spk')->textInput(['maxlength' => true]) ?>
 
+        <?= $form->field($model, 'jenis_bobot')->dropDownList(['0' => 'Bobot Preferensi', '1' => 'Bobot Persen'], ['prompt' => '--PILIH-']) ?>
+        
         <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>
 
         <div class="form-group">

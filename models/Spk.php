@@ -35,7 +35,7 @@ class Spk extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama_spk'], 'required'],
+            [['nama_spk', 'jenis_bobot'], 'required'],
             [['keterangan'], 'string'],
             [['created_date', 'updated_date'], 'safe'],
             [['nama_spk'], 'string', 'max' => 250],
@@ -52,6 +52,7 @@ class Spk extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nama_spk' => 'Nama SPK',
             'keterangan' => 'Keterangan',
+            'jenis_bobot' => 'Jenis Bobot',
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
         ];

@@ -18,7 +18,7 @@ class SpkSearch extends Spk
     {
         return [
             [['id'], 'integer'],
-            [['nama_spk', 'keterangan', 'created_date', 'updated_date'], 'safe'],
+            [['nama_spk', 'keterangan', 'jenis_bobot', 'created_date', 'updated_date'], 'safe'],
         ];
     }
 
@@ -59,6 +59,7 @@ class SpkSearch extends Spk
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'jenis_bobot' => $this->jenis_bobot,
             'created_date' => $this->created_date,
             'updated_date' => $this->updated_date,
         ]);

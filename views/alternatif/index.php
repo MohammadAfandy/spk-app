@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="box-body" style="margin-top: 30px;">
     <div class="row">
         <div class="col-lg-2">
-            <label>Pilih SPK</label>
+            <label>PILIH NAMA SPK</label>
         </div>
         <div class="col-lg-4">
             <?= Html::dropDownList('spk', $id, \yii\helpers\ArrayHelper::map($data_spk, 'id', 'nama_spk'), ['prompt' => '--PILIH--', 'class' => 'form-control', 'id' => 'pilih_spk']) ?>

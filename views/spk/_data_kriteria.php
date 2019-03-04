@@ -1,5 +1,7 @@
 <?php
 use app\components\Helpers;
+
+$jenis_bobot = Helpers::getJenisBobotByIdSpk(!empty($id) ? $id : $spk);
 ?>
 <fieldset class="fieldset">
     <legend>Kriteria</legend>
@@ -9,7 +11,7 @@ use app\components\Helpers;
                 <th>No</th>
                 <th>Nama Kriteria</th>
                 <th>Tipe</th>
-                <th>Bobot</th>
+                <th><?= $jenis_bobot == '0' ? 'Bobot Preferensi' : 'Bobot Persen' ?></th>
             </tr>
         </thead>
         <tbody>
@@ -20,7 +22,7 @@ use app\components\Helpers;
                     <td><?= $no ?></td>
                     <td><?= $kri['nama_kriteria'] ?></td>
                     <td><?= Helpers::getTypeKriteria($kri['type']) ?></td>
-                    <td><?= $kri['bobot'] * 100 . ' %' ?></td>
+                    <td><?= $jenis_bobot == '0' ? $kri['bobot'] : $kri['bobot'] * 100 . ' %' ?></td>
                 </tr>
             <?php $no++; ?>
             <?php endforeach; ?>
