@@ -58,9 +58,10 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
             $(this).find(":submit").attr("disabled", true).html("<span class=\'fa fa-spin fa-spinner\'></span>Proses");
         });
 
-        var data_table = $(".dataTable").dataTable({
+        $(".dataTable").dataTable({
             "pageLength": 20,
-            "bLengthChange": false
+            "bLengthChange": false,
+            "scrollX": true
         });
 
         // $(".dataTable thead tr").clone(true).appendTo(".dataTable thead");

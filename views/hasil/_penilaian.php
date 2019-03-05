@@ -2,7 +2,7 @@
 use app\components\Helpers;
 ?>
 
-<table class="table table-striped table-bordered dataTable table-pdf">
+<table class="table table-striped table-bordered dataTable table-pdf" >
     <thead>
         <tr>
         <th>No</th>

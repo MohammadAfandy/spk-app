@@ -14,12 +14,12 @@ class AdminLteAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/almasaeed2010/adminlte/plugins';
     public $js = [
-        'datatables/dataTables.bootstrap.js',
-        // more plugin Js here
+//         'datatables/dataTables.bootstrap.js',
+//         more plugin Js here
     ];
     public $css = [
-        'datatables/dataTables.bootstrap.min.css',
-        // more plugin CSS here
+//         'datatables/dataTables.bootstrap.min.css',
+//         more plugin CSS here
     ];
     public $depends = [
         'dmstr\web\AdminLteAsset',

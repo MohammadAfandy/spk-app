@@ -49,12 +49,6 @@
     background: transparent;
     border-bottom: 2px solid #C0C0C0;
 }
-.nama_kriteria:focus, .bobot_kriteria:focus, {
+.nama_kriteria:focus, .bobot_kriteria:focus {
     border-bottom: 2px solid #5cb85c;
-}
-
-.dataTable thead tr th input {
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 5px;
 }
