@@ -16,6 +16,7 @@ echo View::render('/spk/_data_alternatif', [
 echo View::render('/spk/_data_kriteria', [
     'spk' => $spk,
     'kriteria' => $kriteria,
+    'arr_bobot' => $arr_bobot,
 ]);
 ?>
 

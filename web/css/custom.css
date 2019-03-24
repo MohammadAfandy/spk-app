@@ -12,7 +12,7 @@
     opacity:0.4;
     filter: alpha(opacity = 50)
 }
-.fa-edit, .fa-close {
+.fa-edit, .fa-close, .perbaikan-bobot {
     cursor: pointer;
 }
 .langkah li {

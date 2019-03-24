@@ -236,4 +236,26 @@ class KriteriaController extends Controller
         
         return false;
     }
+
+    public function actionPerbaikanBobotPreferensi()
+    {
+        if (Yii::$app->request->isAjax) {
+            $id_spk = Yii::$app->request->post('id_spk');
+
+            $arr_bobot = \yii\helpers\ArrayHelper::map(Kriteria::find()->where(['id_spk' => $id_spk])->all(), 'id', 'bobot');
+
+            if (!empty($arr_bobot) && is_array($arr_bobot)) {
+                $sum_bobot = array_sum($arr_bobot);   
+
+                foreach ($arr_bobot as $key => $bobot) {
+                    $arr_bobot[$key] = (string) ($bobot / $sum_bobot);
+                }
+            }
+
+            echo json_encode($arr_bobot);
+
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }

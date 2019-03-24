@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo $this->render('_data_kriteria', [
                 'id' => $id,
                 'kriteria' => $kriteria,
+                'arr_bobot' => $arr_bobot,
             ]);
             ?>
         </div>

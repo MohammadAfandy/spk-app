@@ -105,12 +105,25 @@ class SpkController extends Controller
     public function actionView($id)
     {
         $alternatif = \app\models\Alternatif::find()->where(['id_spk' => $id])->asArray()->all();
-        $kriteria = \app\models\Kriteria::find()->where(['id_spk' => $id])->asArray()->all();
+        $kriteria = \app\models\Kriteria::find()->indexBy('id')->where(['id_spk' => $id])->asArray()->all();
+
+        $arr_bobot = \yii\helpers\ArrayHelper::map($kriteria, 'id', 'bobot');
+
+        if (!empty($arr_bobot) && is_array($arr_bobot)) {
+            $sum_bobot = array_sum($arr_bobot);   
+
+            if ($sum_bobot != 0) {
+                foreach ($arr_bobot as $key => $bobot) {
+                    $arr_bobot[$key] = (string) ($bobot / $sum_bobot);
+                }
+            }
+        }
 
         return $this->render('view', [
             'id' => $id,
             'alternatif' => $alternatif,
             'kriteria' => $kriteria,
+            'arr_bobot' => $arr_bobot,
         ]);
     }
 

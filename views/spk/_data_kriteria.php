@@ -12,6 +12,7 @@ $jenis_bobot = Helpers::getJenisBobotByIdSpk(!empty($id) ? $id : $spk);
                 <th>Nama Kriteria</th>
                 <th>Tipe</th>
                 <th><?= $jenis_bobot == '0' ? 'Bobot Preferensi' : 'Bobot Persen' ?></th>
+                <?= $jenis_bobot == '0' ? '<th>Perbaikan Bobot</th>' : '' ?>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,7 @@ $jenis_bobot = Helpers::getJenisBobotByIdSpk(!empty($id) ? $id : $spk);
                     <td><?= $kri['nama_kriteria'] ?></td>
                     <td><?= Helpers::getTypeKriteria($kri['type']) ?></td>
                     <td><?= $jenis_bobot == '0' ? $kri['bobot'] : $kri['bobot'] * 100 . ' %' ?></td>
+                    <?= $jenis_bobot == '0' ? '<td>' . round($arr_bobot[$key], 3) . '</td>' : '' ?>
                 </tr>
             <?php $no++; ?>
             <?php endforeach; ?>

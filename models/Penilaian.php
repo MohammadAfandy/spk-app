@@ -71,7 +71,7 @@ class Penilaian extends \yii\db\ActiveRecord
 
     public function getAlternatif()
     {
-        return $this->hasOne(Alternatif::className(), ['id' => 'id_alternatif']);
+        return $this->hasOne(Alternatif::className(), ['id' => 'id_alternatif'])->from(['alternatif' => Alternatif::tableName()]);
     }
 
     public static function cekAlternatif($id)

@@ -165,6 +165,18 @@ class HasilController extends Controller
         $penilaian = $kriteria = $nilai = $hasil = $alt_terbaik = null;
         $penilaian = Penilaian::find()->alias('p')->where(['p.id_spk' => $id_spk])->joinWith(['alternatif'])->all();
         $kriteria = Kriteria::find()->indexBy('id')->where(['id_spk' => $id_spk])->all();
+
+        $arr_bobot = \yii\helpers\ArrayHelper::map($kriteria, 'id', 'bobot');
+        if (!empty($arr_bobot) && is_array($arr_bobot)) {
+            $sum_bobot = array_sum($arr_bobot);   
+
+            if ($sum_bobot != 0) {
+                foreach ($arr_bobot as $key => $bobot) {
+                    $arr_bobot[$key] = (string) ($bobot / $sum_bobot);
+                }
+            }
+        }
+
         $jenis_bobot = Helpers::getJenisBobot($id_spk);
 
         if ($penilaian && !Helpers::cekBobotKosong($id_spk)) {
@@ -183,6 +195,7 @@ class HasilController extends Controller
         return [
             'penilaian' => $penilaian,
             'kriteria' => $kriteria,
+            'arr_bobot' => $arr_bobot,
             'nilai' => $nilai,
             'hasil' => $hasil,
             'alt_terbaik' => $alt_terbaik,

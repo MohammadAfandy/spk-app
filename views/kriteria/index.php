@@ -4,6 +4,7 @@ use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Kriteria;
+use \app\models\Spk;
 use yii\bootstrap\Modal;
 use mdm\admin\components\Helper;
 use yii\helpers\Url;
@@ -135,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                     ],
                     [
-                        'header' => '<span>Bobot (' . (Helpers::getJenisBobot($id) === 0 ? 'Preferensi' : 'Persen') . ')</span>' . '<span class="pull-right">' . 
+                        'header' => '<span>Bobot ' . (Helpers::getJenisBobot($id) === 0 ? '(Preferensi) <a class="fa fa-calculator perbaikan-bobot" title="Hitung Perbaikan Bobot"></a>' : '(Persen)') . '</span>' . '<span class="pull-right">' . 
                         '<i class="fa fa-edit fa-lg" id="btn_edit_all_bobot" title="Edit All Bobot"></i>' . ' ' .
                         '<i class="fa fa-close fa-lg" id="btn_cancel_all_bobot" title="Cancel All Bobot"></i>'
                             // Html::button('Edit All', [
@@ -151,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function($model) use ($id, &$tabindex) {
                             $bobot = Html::textInput(
                                 'Kriteria[' .$model->id. '][bobot]',
-                                Helpers::getJenisBobot($id) === \app\models\Spk::BOBOT_PERSEN
+                                Helpers::getJenisBobot($id) === Spk::BOBOT_PERSEN
                                 ? $model->bobot * 100
                                 : $model->bobot,
                                 [
@@ -160,9 +161,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'disabled' => 'disabled',
                                     'tabindex' => $tabindex,
                                     'data-id' => $model->id,
-                                    'data-oldval' => $model->bobot * 100,
+                                    'data-oldval' => Helpers::getJenisBobot($id) === Spk::BOBOT_PERSEN ? $model->bobot * 100 : $model->bobot,
                                 ]
                             );
+                            $perbaikan = '<span class="label label-primary perbaikan-bobot-text" data-id="'.$model->id.'"></span>';
                             $edit = '<i class="fa fa-edit btn_edit_bobot" data-id="' .$model->id. '" title="Edit Bobot"></i>';
                             $cancel = '<i class="fa fa-close btn_cancel_bobot" data-id="' .$model->id. '" title="Cancel Bobot"></i>';
                             // $edit = Html::button('Edit', [
@@ -174,7 +176,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             //     'data-id' => $model->id,
                             // ]);
                             $tabindex++;
-                            return $bobot . '<span class="pull-right">' . $edit . ' '. $cancel;
+                            return $bobot . $perbaikan . '<span class="pull-right">' . $edit . ' '. $cancel;
                         },
                         'format' => 'raw',
                     ],
@@ -213,25 +215,6 @@ $this->registerJs(
         showLoading();
         window.location.href = "' .Url::to(['index']). '/" + this.value;
     });
-
-    // if ($("#jenis_bobot").val() == "1") {
-    //     $(".pilih-bobot").find(".text-bobot").text("Bobot Persen")
-    //     $(".pilih-bobot").attr("title", "Ganti ke Bobot Preferensi");
-    // }
-
-    // $(".pilih-bobot").on("click", function() {
-    //     if ($(this).find(".text-bobot").text() == "Bobot Preferensi") {
-    //         $(this).find(".text-bobot").text("Bobot Persen");
-    //         $(this).attr("title", "Ganti ke Bobot Preferensi");
-
-    //         $("#jenis_bobot").val("1");
-    //     } else {
-    //         $(this).find(".text-bobot").text("Bobot Preferensi");
-    //         $(this).attr("title", "Ganti ke Bobot Persen");
-
-    //         $("#jenis_bobot").val("0");
-    //     }
-    // });
 
     $(document).on("click", ".btn_edit_nama", function() {
         let id = $(this).data("id");
@@ -382,6 +365,25 @@ $this->registerJs(
                 return false;   
             }
         }
+    });
+
+    $(".perbaikan-bobot").on("click", function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+            url: "'. \yii\helpers\Url::to(['perbaikan-bobot-preferensi']) .'",
+            data: {id_spk: "' . $id . '"},
+            type: "post",
+            dataType: "json",
+            beforeSend: function() { showLoading() },
+            success: function(result) {
+                console.log(result);
+                $.each(result, function(key, value) {
+                    $(".perbaikan-bobot-text[data-id="+key+"]").text(parseFloat(value).toFixed(3));
+                });
+            },
+            complete: function() { endLoading() }
+        });
     });
 
     $("#btn_reset").on("click", function() {

@@ -4,7 +4,7 @@ use app\components\Helpers;
 ?>
 <table class="table table-hover table-bordered dataTable">
     <thead>
-        <th>No</th>
+        <th>#</th>
         <th>Nama Alternatif</th>
 
         <?php foreach ($kriteria as $kri): ?>
@@ -30,16 +30,13 @@ use app\components\Helpers;
                     </td>
                 <?php endforeach; ?>
                 <td>
-                    <?= Html::a('Update',
-                        ['update', 'id' => $pen->id],
-                        [
-                            'class' => 'btn btn-primary btn-xs',
+                    <?= Html::a('', ['update', 'id' => $pen->id], [
+                            'class' => 'fa fa-edit', 'title' => 'Edit'
                         ]
                     ); ?>
-                    <?= Html::a('Delete',
-                        ['delete', 'id' => $pen->id],
-                        [
-                            'class' => 'btn btn-danger btn-xs',
+                    <?= Html::a('', ['delete', 'id' => $pen->id], [
+                            'class' => 'fa fa-trash',
+                            'title' => 'Delete',
                             'data-confirm' => 'Apakah Anda Yakin Ingin Menghapus Data ?',
                             'data-method' => 'post',
                         ]
