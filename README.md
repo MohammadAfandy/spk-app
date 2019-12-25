@@ -1,3 +1,12 @@
+# APLIKASI SISTEM PENDUKUNG KEPUTUSAN MENGGUNAKAN METODE SAW DAN WP
+
+### DEMO
+```
+URL: https://spk-app.herokuapp.com/
+User: demo
+Pass: demo123
+```
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
