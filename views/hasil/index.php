@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12"">
+                <div class="col-lg-12">
                     <div class="alert alert-info" style="margin-top: 20px">
                         Berdasarkan Sistem Pendukung Keputusan <strong><?= ucwords(Helpers::getNamaSpkByIdSpk($spk)) ?></strong> menggunakan <strong>Metode <?= strtoupper($metode) ?></strong>, maka diperoleh hasil bahwa <strong>Alternatif Terbaik</strong> adalah <strong><?= count($alt_terbaik) > 1 ? implode(' dan ', $alt_terbaik) : $alt_terbaik[0]; ?></strong>
                     </div>

@@ -68,9 +68,22 @@ class HasilController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $penilaian = $normalisasi = $rank = $vektor_s = $vektor_v = [];
+        $data_alternatif = $data_kriteria = $penilaian = $normalisasi = $rank = $vektor_s = $vektor_v = [];
+
+        $no = 0;
+        $data_alternatif = array_map(function($v) use (&$no) {
+            return ['no' => ++$no] + $v;
+        }, Alternatif::find()->select(['nama_alternatif', 'keterangan'])->where(['id_spk' => $spk])->asArray()->all());
+        
+        $no = 0;
+        $data_kriteria = array_map(function($v) use (&$no, $spk) {
+            $v['type'] = $v['type'] == Kriteria::COST ? 'COST' : 'BENEFIT'; 
+            $v['bobot'] = Helpers::getJenisBobot($spk) == Spk::BOBOT_PERSEN ? $v['bobot'] * 100 . ' %' : $v['bobot']; 
+            return ['no' => ++$no] + $v;
+        }, Kriteria::find()->select(['nama_kriteria', 'type', 'bobot'])->where(['id_spk' => $spk])->asArray()->all());
 
         $result = $this->getHasil($spk, $metode);
+
         $arr_rank = $metode === 'saw' ? array_keys($result['hasil']['rank']) : array_keys($result['hasil']['vektor_v']);
         $titles = ['No', 'Nama Alternatif'];
 
@@ -116,23 +129,11 @@ class HasilController extends Controller
 
         $data_excel = [
             'Alternatif' => [
-                'data' => Yii::$app->db->createCommand(
-                    "SELECT (@position := @position + 1) AS `no`, `nama_alternatif`, `keterangan`
-                    FROM `tbl_alternatif`
-                    CROSS JOIN (SELECT @position := 0) `p`
-                    WHERE `id_spk` = '$spk';"
-                )->queryAll(),
+                'data' => $data_alternatif,
                 'titles' => ['No', 'Nama Alternatif', 'Keterangan'],
             ],
             'Kriteria' => [
-                'data' => Yii::$app->db->createCommand(
-                    "SELECT (@position := @position + 1) AS `no`, `nama_kriteria`,
-                    IF(`type` = 0, 'COST', 'BENEFIT') AS `type`,
-                    CONCAT(`bobot` * 100, ' %') AS `bobot`
-                    FROM `tbl_kriteria`
-                    CROSS JOIN (SELECT @position := 0) `p`
-                    WHERE `id_spk` = '$spk';"
-                )->queryAll(),
+                'data' => $data_kriteria,
                 'titles' => ['No', 'Nama Kriteria', 'Type', 'Bobot'],
             ],
             'Penilaian' => [

@@ -1,11 +1,14 @@
 <?php
+use Symfony\Component\Dotenv\Dotenv;
+$dotenv = new Dotenv();
+$dotenv->load('../.env');
+$_ENV = array_merge(getenv(), $_ENV);
 
 $params = require __DIR__ . '/params.php';
-// $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'spk-app',
-    'name' => 'Sistem Pendukung Keputusan',
+    'id' => $_ENV['APP_ID'],
+    'name' => $_ENV['APP_NAME'],
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -93,19 +96,19 @@ $config = [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=db_spk',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => $_ENV['DB_CONNECTION'] . ':host=' . $_ENV['DB_HOST'] . ';port=' . $_ENV['DB_PORT'] . ';dbname=' . $_ENV ['DB_SPK'],
+            'username' => $_ENV['DB_USER'],
+            'password' => $_ENV['DB_PASSWORD'],
             'charset' => 'utf8',
-            'tablePrefix' => 'tbl_',
+            'tablePrefix' => $_ENV['DB_PREFIX'],
         ],
         'dbUser' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=db_spk_user',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => $_ENV['DB_CONNECTION'] . ':host=' . $_ENV['DB_HOST'] . ';port=' . $_ENV['DB_PORT'] . ';dbname=' . $_ENV ['DB_SPK_USER'],
+            'username' => $_ENV['DB_USER'],
+            'password' => $_ENV['DB_PASSWORD'],
             'charset' => 'utf8',
-            'tablePrefix' => 'tbl_',
+            'tablePrefix' => $_ENV['DB_PREFIX'],
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',

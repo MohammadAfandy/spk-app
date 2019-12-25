@@ -24,7 +24,9 @@
         "mdmsoft/yii2-admin": "~2.0",
         "dmstr/yii2-adminlte-asset": "^2.1",
         "kartik-v/yii2-mpdf": "*",
-        "codemix/yii2-excelexport": "*"
+        "codemix/yii2-excelexport": "*",
+        "larapack/dd": "^1.1",
+        "symfony/dotenv": "^5.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

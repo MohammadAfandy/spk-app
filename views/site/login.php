@@ -10,7 +10,7 @@ $this->title = 'Sign In';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>",
 ];
 
 $fieldOptions2 = [
@@ -19,13 +19,18 @@ $fieldOptions2 = [
 ];
 ?>
 
+<style>
+.login-box {
+    min-width: 500px;
+}
+</style>
+
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><?= Yii::$app->name ?>
+        <a href="#">Login Page
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Please Sign in here</p>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
@@ -51,9 +56,6 @@ $fieldOptions2 = [
         </div>
         
         <?php ActiveForm::end(); ?>
-
-        <a href="#">Lupa Password</a><br>
-
     </div>
     <!-- /.login-box-body -->
 </div><!-- /.login-box -->

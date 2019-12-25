@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <form method="POST" action="<?= Yii::$app->urlManager->createUrl(['kriteria/set-kriteria']) ?>">
             <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
-            <?= Html::hiddenInput('jenis_bobot', Helpers::getJenisBobot($id), ['id' => 'jenis_bobot']) ?>
+            <?= Html::hiddenInput('jenis_bobot', $data_spk[$id]->jenis_bobot, ['id' => 'jenis_bobot']) ?>
             <div style="color: red; min-height: 20px;">
                 <strong><span id="error_bobot"></span></strong>
             </div>
@@ -136,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                     ],
                     [
-                        'header' => '<span>Bobot ' . (Helpers::getJenisBobot($id) === 0 ? '(Preferensi) <a class="fa fa-calculator perbaikan-bobot" title="Hitung Perbaikan Bobot"></a>' : '(Persen)') . '</span>' . '<span class="pull-right">' . 
+                        'header' => '<span>Bobot ' . ($data_spk[$id]->jenis_bobot === 0 ? '(Preferensi) <a class="fa fa-calculator perbaikan-bobot" title="Hitung Perbaikan Bobot"></a>' : '(Persen)') . '</span>' . '<span class="pull-right">' . 
                         '<i class="fa fa-edit fa-lg" id="btn_edit_all_bobot" title="Edit All Bobot"></i>' . ' ' .
                         '<i class="fa fa-close fa-lg" id="btn_cancel_all_bobot" title="Cancel All Bobot"></i>'
                             // Html::button('Edit All', [
@@ -149,10 +149,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             // ])
                         ,
                         'attribute' => 'bobot',
-                        'value' => function($model) use ($id, &$tabindex) {
+                        'value' => function($model) use ($data_spk, $id, &$tabindex) {
                             $bobot = Html::textInput(
                                 'Kriteria[' .$model->id. '][bobot]',
-                                Helpers::getJenisBobot($id) === Spk::BOBOT_PERSEN
+                                $data_spk[$id]->jenis_bobot === Spk::BOBOT_PERSEN
                                 ? $model->bobot * 100
                                 : $model->bobot,
                                 [
@@ -161,7 +161,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'disabled' => 'disabled',
                                     'tabindex' => $tabindex,
                                     'data-id' => $model->id,
-                                    'data-oldval' => Helpers::getJenisBobot($id) === Spk::BOBOT_PERSEN ? $model->bobot * 100 : $model->bobot,
+                                    'data-oldval' => $data_spk[$id]->jenis_bobot === Spk::BOBOT_PERSEN ? $model->bobot * 100 : $model->bobot,
                                 ]
                             );
                             $perbaikan = '<span class="label label-primary perbaikan-bobot-text" data-id="'.$model->id.'"></span>';
