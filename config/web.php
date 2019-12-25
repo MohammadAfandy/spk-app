@@ -1,7 +1,7 @@
 <?php
 use Symfony\Component\Dotenv\Dotenv;
 $dotenv = new Dotenv();
-if file_exists('../.env') {
+if (file_exists('../.env')) {
     $dotenv->load('../.env');    
 }
 $_ENV = array_merge(getenv(), $_ENV);
