@@ -27,10 +27,14 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#">Login Page
+        <a href="#">Login Page</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
+        <div class="alert alert-warning">
+            <p>User: demo</p>
+            <p>Pass: demo123</p>
+        </div>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
