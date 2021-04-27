@@ -2,7 +2,7 @@
 
 ### DEMO
 ```
-URL: https://spk-app.herokuapp.com/
+URL: https://spk-app.mohammadafandy.com/
 User: demo
 Pass: demo123
 ```
